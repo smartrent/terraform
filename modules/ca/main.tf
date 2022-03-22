@@ -116,7 +116,7 @@ resource "null_resource" "sync_ca_application_data_ssl" {
 }
 
 # SSM
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_db_url" {
+resource "aws_ssm_parameter" "database_url" {
   name      = "/nerves_hub_ca/${terraform.workspace}/DATABASE_URL"
   type      = "SecureString"
   value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}"
@@ -124,7 +124,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_db_url" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_erl_cookie" {
+resource "aws_ssm_parameter" "erl_cookie" {
   name      = "/nerves_hub_ca/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
   value     = var.erl_cookie
@@ -132,7 +132,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_erl_cookie" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_s3_bucket" {
+resource "aws_ssm_parameter" "s3_bucket_name" {
   name      = "/nerves_hub_ca/${terraform.workspace}/S3_BUCKET"
   type      = "String"
   value     = aws_s3_bucket.ca_application_data.bucket
@@ -140,7 +140,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_s3_bucket" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/nerves_hub_ca/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = "nerves_hub_ca"
@@ -148,7 +148,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_app_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_host" {
+resource "aws_ssm_parameter" "host" {
   name      = "/nerves_hub_ca/${terraform.workspace}/HOST"
   type      = "String"
   value     = var.host_name
@@ -323,6 +323,7 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
 
   container_definitions = <<DEFINITION
    [
+     ${local.fire_lens_container},
      {
        "portMappings": [
          {
@@ -342,20 +343,37 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
        "privileged": false,
        "name": "nerves_hub_ca",
        "environment": [
-         {
-           "name": "ENVIRONMENT",
-           "value": "${terraform.workspace}"
-         }
+         ${local.ecs_shared_env_vars}
        ],
+       "secrets": [
+          ${local.ecs_shared_ssm_secrets},
+          ${local.ecs_dac_shared_ssm_secrets}
+        ],
+       "volumesFrom": [],
+       "mountPoints": [],
        "logConfiguration": {
-         "logDriver": "awslogs",
+         "logDriver": "awsfirelens",
          "options": {
-           "awslogs-region": "${var.region}",
-           "awslogs-group": "${var.log_group}",
-           "awslogs-stream-prefix": "nerves_hub_ca"
+            "Name": "datadog",
+            "compress": "gzip",
+            "Host": "http-intake.logs.datadoghq.com",
+            "dd_service": "${var.app_name}",
+            "dd_source": "elixir",
+            "dd_message_key": "log",
+            "dd_tags": "env:${var.profile},application:${var.app_name}-${var.profile},version:${var.docker_image}",
+            "TLS": "on",
+            "provider": "ecs"
+          },
+          "secretOptions": [
+            {
+              "name": "apikey",
+              "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+            }
+          ]
          }
        }
-     }
+     },
+     ${local.datadog_ecs_agent_task_def}
    ]
 
 DEFINITION

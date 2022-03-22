@@ -56,7 +56,7 @@ resource "aws_lb_listener" "device_lb_listener" {
 }
 
 # SSM
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_db_url" {
+resource "aws_ssm_parameter" "database_url" {
   name      = "/${local.device_app_name}/${terraform.workspace}/DATABASE_URL"
   type      = "SecureString"
   value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}"
@@ -64,7 +64,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_db_url" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_erl_cookie" {
+resource "aws_ssm_parameter" "erl_cookie" {
   name      = "/${local.device_app_name}/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
   value     = var.erl_cookie
@@ -72,7 +72,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_erl_cookie" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_s3_ssl_bucket" {
+resource "aws_ssm_parameter" "s3_ssl_bucket" {
   name      = "/${local.device_app_name}/${terraform.workspace}/S3_SSL_BUCKET"
   type      = "String"
   value     = var.ca_bucket
@@ -80,7 +80,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_s3_ssl_bucket" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_s3_log_bucket_name" {
+resource "aws_ssm_parameter" "s3_log_bucket" {
   name      = "/${local.device_app_name}/${terraform.workspace}/S3_LOG_BUCKET_NAME"
   type      = "String"
   value     = var.log_bucket
@@ -88,7 +88,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_s3_log_bucket_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/${local.device_app_name}/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = local.device_app_name
@@ -96,7 +96,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_app_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_cluster" {
+resource "aws_ssm_parameter" "cluster_name" {
   name      = "/${local.device_app_name}/${terraform.workspace}/CLUSTER"
   type      = "String"
   value     = var.cluster.name
@@ -104,7 +104,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_cluster" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_aws_region" {
+resource "aws_ssm_parameter" "aws_region" {
   name      = "/${local.device_app_name}/${terraform.workspace}/AWS_REGION"
   type      = "String"
   value     = var.region
@@ -112,7 +112,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_aws_region" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_port" {
+resource "aws_ssm_parameter" "port" {
   name      = "/${local.device_app_name}/${terraform.workspace}/PORT"
   type      = "String"
   value     = 80
@@ -120,7 +120,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_port" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_host" {
+resource "aws_ssm_parameter" "host" {
   name      = "/${local.device_app_name}/${terraform.workspace}/HOST"
   type      = "String"
   value     = var.host_name
@@ -128,7 +128,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_host" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_s3_bucket_name" {
+resource "aws_ssm_parameter" "s3_bucket_name" {
   name      = "/${local.device_app_name}/${terraform.workspace}/S3_BUCKET_NAME"
   type      = "String"
   value     = var.app_bucket
@@ -136,7 +136,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_s3_bucket_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_secret_key_base" {
+resource "aws_ssm_parameter" "secret_key_base" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SECRET_KEY_BASE"
   type      = "SecureString"
   value     = var.secret_key_base
@@ -144,7 +144,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_secret_key_base" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_ses_port" {
+resource "aws_ssm_parameter" "ses_port" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SES_PORT"
   type      = "String"
   value     = "587"
@@ -152,7 +152,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_ses_port" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_ses_server" {
+resource "aws_ssm_parameter" "ses_server" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SES_SERVER"
   type      = "String"
   value     = "email-smtp.${var.region}.amazonaws.com"
@@ -160,7 +160,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_ses_server" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_www_ses_from_email" {
+resource "aws_ssm_parameter" "ses_from_email" {
   name      = "/${local.device_app_name}/${terraform.workspace}/FROM_EMAIL"
   type      = "SecureString"
   value     = var.from_email
@@ -170,7 +170,7 @@ resource "aws_ssm_parameter" "nerves_hub_www_ses_from_email" {
 
 # Set lifecycle parameter for SMTP creds to avoid sensitive info in tfvars
 # To accommodate for AWS SES Access Keys generated
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_smtp_username" {
+resource "aws_ssm_parameter" "smtp_username" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SMTP_USERNAME"
   type      = "SecureString"
   value     = var.smtp_password
@@ -182,7 +182,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_smtp_username" {
   }
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_smtp_password" {
+resource "aws_ssm_parameter" "smtp_password" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SMTP_PASSWORD"
   type      = "SecureString"
   value     = var.smtp_username
@@ -362,6 +362,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
 
   container_definitions = <<DEFINITION
    [
+     ${local.fire_lens_container},
      {
        "portMappings": [
          {
@@ -381,24 +382,38 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        "privileged": false,
        "name": "${local.device_app_name}",
        "environment": [
-         {
-           "name": "ENVIRONMENT",
-           "value": "${terraform.workspace}"
-         },
-         {
-           "name": "APP_NAME",
-           "value": "${local.device_app_name}"
-         }
+         ${local.ecs_shared_env_vars}
        ],
+       "secrets": [
+          ${local.ecs_shared_ssm_secrets},
+          ${local.ecs_daw_shared_ssm_secrets},
+          ${local.ecs_da_shared_ssm_secrets}
+        ],
+       "volumesFrom": [],
+       "mountPoints": [],
        "logConfiguration": {
-         "logDriver": "awslogs",
+         "logDriver": "awsfirelens",
          "options": {
-           "awslogs-region": "${var.region}",
-           "awslogs-group": "${var.log_group}",
-           "awslogs-stream-prefix": "${local.device_app_name}"
+            "Name": "datadog",
+            "compress": "gzip",
+            "Host": "http-intake.logs.datadoghq.com",
+            "dd_service": "${var.app_name}",
+            "dd_source": "elixir",
+            "dd_message_key": "log",
+            "dd_tags": "env:${var.profile},application:${var.app_name}-${var.profile},version:${var.docker_image}",
+            "TLS": "on",
+            "provider": "ecs"
+          },
+          "secretOptions": [
+            {
+              "name": "apikey",
+              "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+            }
+          ]
          }
        }
-     }
+     },
+     ${local.datadog_ecs_agent_task_def}
    ]
 
 DEFINITION
