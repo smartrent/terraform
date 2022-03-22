@@ -116,7 +116,7 @@ resource "null_resource" "sync_ca_application_data_ssl" {
 }
 
 # SSM
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_db_url" {
+resource "aws_ssm_parameter" "database_url" {
   name      = "/nerves_hub_ca/${terraform.workspace}/DATABASE_URL"
   type      = "SecureString"
   value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}"
@@ -323,6 +323,7 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
 
   container_definitions = <<DEFINITION
    [
+     ${local.fire_lens_container},
      {
        "portMappings": [
          {
@@ -342,20 +343,36 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
        "privileged": false,
        "name": "nerves_hub_ca",
        "environment": [
-         {
-           "name": "ENVIRONMENT",
-           "value": "${terraform.workspace}"
-         }
+         ${local.ecs_shared_env_vars}
        ],
+       "secrets": [
+          ${local.ecs_shared_ssm_secrets}
+        ],
+       "volumesFrom": [],
+       "mountPoints": [],
        "logConfiguration": {
-         "logDriver": "awslogs",
+         "logDriver": "awsfirelens",
          "options": {
-           "awslogs-region": "${var.region}",
-           "awslogs-group": "${var.log_group}",
-           "awslogs-stream-prefix": "nerves_hub_ca"
+            "Name": "datadog",
+            "compress": "gzip",
+            "Host": "http-intake.logs.datadoghq.com",
+            "dd_service": "${var.app_name}",
+            "dd_source": "elixir",
+            "dd_message_key": "log",
+            "dd_tags": "env:${var.profile},application:${var.app_name}-${var.profile},version:${var.docker_image}",
+            "TLS": "on",
+            "provider": "ecs"
+          },
+          "secretOptions": [
+            {
+              "name": "apikey",
+              "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+            }
+          ]
          }
        }
-     }
+     },
+     ${local.datadog_ecs_agent_task_def}
    ]
 
 DEFINITION
