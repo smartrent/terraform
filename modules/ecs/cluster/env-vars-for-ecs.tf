@@ -18,10 +18,6 @@ locals {
         {
             "name": "S3_BUCKET_NAME",
             "valueFrom": "${aws_ssm_parameter.s3_bucket_name.arn}"
-        },
-        {
-            "name": "SECRET_KEY_BASE",
-            "valueFrom": "${aws_ssm_parameter.secret_key_base.arn}"
         }
 EOF
 
@@ -37,6 +33,26 @@ EOF
         {
           "name": "SES_PORT",
           "valueFrom": "${aws_ssm_parameter.ses_port.arn}"
+        },
+        {
+          "name": "SES_SERVER",
+          "valueFrom": "${aws_ssm_parameter.ses_server.arn}"
+        },
+        {
+          "name": "SES_FROM_EMAIL",
+          "valueFrom": "${aws_ssm_parameter.ses_from_email.arn}"
+        },
+        {
+          "name": "SMTP_USERNAME",
+          "valueFrom": "${aws_ssm_parameter.smtp_username.arn}"
+        },
+        {
+          "name": "SMTP_PASSWORD",
+          "valueFrom": "${aws_ssm_parameter.smtp_password.arn}"
+        },
+        {
+            "name": "SECRET_KEY_BASE",
+            "valueFrom": "${aws_ssm_parameter.secret_key_base.arn}"
         }
 EOF
 
