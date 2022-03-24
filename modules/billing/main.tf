@@ -64,7 +64,7 @@ resource "aws_ssm_parameter" "erl_cookie" {
   overwrite = true
 }
 
-resource "aws_ssm_parameter" "nerves_hub_billing_ssm_s3_bucket" {
+resource "aws_ssm_parameter" "s3_bucket_name" {
   name      = "/nerves_hub_billing/${terraform.workspace}/S3_BUCKET"
   type      = "String"
   value     = var.ca_bucket

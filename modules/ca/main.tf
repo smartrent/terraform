@@ -132,7 +132,7 @@ resource "aws_ssm_parameter" "erl_cookie" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_s3_bucket" {
+resource "aws_ssm_parameter" "s3_bucket_name" {
   name      = "/nerves_hub_ca/${terraform.workspace}/S3_BUCKET"
   type      = "String"
   value     = aws_s3_bucket.ca_application_data.bucket
