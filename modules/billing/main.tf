@@ -71,7 +71,7 @@ resource "aws_ssm_parameter" "nerves_hub_billing_ssm_s3_bucket" {
   overwrite = true
 }
 
-resource "aws_ssm_parameter" "nerves_hub_billing_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/nerves_hub_billing/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = "nerves_hub_billing"

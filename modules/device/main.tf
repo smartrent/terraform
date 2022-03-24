@@ -88,7 +88,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_s3_log_bucket_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/${local.device_app_name}/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = local.device_app_name

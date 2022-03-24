@@ -140,7 +140,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_s3_bucket" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/nerves_hub_ca/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = "nerves_hub_ca"
