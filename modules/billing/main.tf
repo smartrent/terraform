@@ -57,21 +57,21 @@ resource "aws_ssm_parameter" "nerves_hub_billing_ssm_secret_db_url" {
   overwrite = true
 }
 
-resource "aws_ssm_parameter" "nerves_hub_billing_ssm_secret_erl_cookie" {
+resource "aws_ssm_parameter" "erl_cookie" {
   name      = "/nerves_hub_billing/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
   value     = var.erl_cookie
   overwrite = true
 }
 
-resource "aws_ssm_parameter" "nerves_hub_billing_ssm_s3_bucket" {
+resource "aws_ssm_parameter" "s3_bucket_name" {
   name      = "/nerves_hub_billing/${terraform.workspace}/S3_BUCKET"
   type      = "String"
   value     = var.ca_bucket
   overwrite = true
 }
 
-resource "aws_ssm_parameter" "nerves_hub_billing_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/nerves_hub_billing/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = "nerves_hub_billing"
