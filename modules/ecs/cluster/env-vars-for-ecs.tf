@@ -14,6 +14,10 @@ locals {
             "valueFrom": "${aws_ssm_parameter.app_name.arn}"
         },
         {
+            "name": "S3_BUCKET_NAME",
+            "valueFrom": "${aws_ssm_parameter.s3_bucket_name.arn}"
+        },
+        {
             "name": "SECRET_KEY_BASE",
             "valueFrom": "${aws_ssm_parameter.secret_key_base.arn}"
         },
