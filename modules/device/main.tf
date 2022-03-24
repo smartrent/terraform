@@ -112,7 +112,7 @@ resource "aws_ssm_parameter" "aws_region" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_port" {
+resource "aws_ssm_parameter" "port" {
   name      = "/${local.device_app_name}/${terraform.workspace}/PORT"
   type      = "String"
   value     = 80
@@ -386,7 +386,9 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        ],
        "secrets": [
           ${local.ecs_shared_ssm_secrets},
-          ${local.ecs_daw_shared_ssm_secrets}
+          ${local.ecs_daw_shared_ssm_secrets},
+          ${local.ecs_dac_shared_ssm_secrets},
+          ${local.ecs_da_shared_ssm_secrets}
         ],
        "volumesFrom": [],
        "mountPoints": [],

@@ -69,6 +69,13 @@ EOF
         }
 EOF
 
+  ecs_da_shared_ssm_secrets = <<EOF
+        {
+            "name": "PORT",
+            "valueFrom": "${aws_ssm_parameter.port.arn}"
+        }
+EOF
+
   ecs_shared_env_vars = <<EOF
         { "name" : "MIX_ENV", "value" : "${var.profile}" },
         { "name" : "MAX_ATTEMPTS_BEFORE_MANUAL_VERIFICATION", "value" : "${var.max_attempts_before_manual_verification}" },
