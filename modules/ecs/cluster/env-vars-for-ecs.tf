@@ -42,6 +42,21 @@ EOF
         }
 EOF
 
+  ecs_daw_shared_ssm_secrets = <<EOF
+        {
+          "name": "CLUSTER_NAME",
+          "valueFrom": "${aws_ssm_parameter.cluster_name.arn}"
+        },
+        {
+          "name": "AWS_REGION",
+          "valueFrom": "${aws_ssm_parameter.aws_region.arn}"
+        },
+        {
+          "name": "SES_PORT",
+          "valueFrom": "${aws_ssm_parameter.ses_port.arn}"
+        }
+EOF
+
   ecs_shared_env_vars = <<EOF
         { "name" : "MIX_ENV", "value" : "${var.profile}" },
         { "name" : "MAX_ATTEMPTS_BEFORE_MANUAL_VERIFICATION", "value" : "${var.max_attempts_before_manual_verification}" },
