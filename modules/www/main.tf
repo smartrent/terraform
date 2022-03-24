@@ -411,7 +411,8 @@ resource "aws_ecs_task_definition" "www_task_definition" {
          ${local.ecs_shared_env_vars}
        ],
        "secrets": [
-          ${local.ecs_shared_ssm_secrets}
+          ${local.ecs_shared_ssm_secrets},
+          ${local.ecs_daw_shared_ssm_secrets}
         ],
        "volumesFrom": [],
        "mountPoints": [],

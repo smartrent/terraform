@@ -3,7 +3,7 @@ locals {
   datadog_ecs_agent_task_def = <<EOF
 {
   "name": "datadog-agent",
-  "image": "514496004130.dkr.ecr.us-east-1.amazonaws.com/datadog-agent-eng:7",
+  "image": "${var.datadog_image}",
   "essential": false,
   "memoryReservation": 256,
   "cpu": 10,

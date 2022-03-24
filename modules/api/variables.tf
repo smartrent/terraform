@@ -63,3 +63,9 @@ variable "tags" {
     terraform = true
   }
 }
+
+variable "log_level" {
+  description = "Level of logging in datadog"
+  type = string
+  default = "info"
+}
