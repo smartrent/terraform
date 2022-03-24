@@ -136,7 +136,7 @@ resource "aws_ssm_parameter" "s3_bucket_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_secret_key_base" {
+resource "aws_ssm_parameter" "secret_key_base" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SECRET_KEY_BASE"
   type      = "SecureString"
   value     = var.secret_key_base
@@ -152,7 +152,7 @@ resource "aws_ssm_parameter" "ses_port" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_ses_server" {
+resource "aws_ssm_parameter" "ses_server" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SES_SERVER"
   type      = "String"
   value     = "email-smtp.${var.region}.amazonaws.com"
@@ -170,7 +170,7 @@ resource "aws_ssm_parameter" "ses_from_email" {
 
 # Set lifecycle parameter for SMTP creds to avoid sensitive info in tfvars
 # To accommodate for AWS SES Access Keys generated
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_smtp_username" {
+resource "aws_ssm_parameter" "smtp_username" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SMTP_USERNAME"
   type      = "SecureString"
   value     = var.smtp_password
@@ -182,7 +182,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_smtp_username" {
   }
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_smtp_password" {
+resource "aws_ssm_parameter" "smtp_password" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SMTP_PASSWORD"
   type      = "SecureString"
   value     = var.smtp_username
