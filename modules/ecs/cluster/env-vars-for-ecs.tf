@@ -53,6 +53,14 @@ EOF
         {
             "name": "SECRET_KEY_BASE",
             "valueFrom": "${aws_ssm_parameter.secret_key_base.arn}"
+        },
+        {
+            "name": "S3_SSL_BUCKET",
+            "valueFrom": "${aws_ssm_parameter.s3_ssl_bucket.arn}"
+        },
+        {
+            "name": "S3_LOG_BUCKET",
+            "valueFrom": "${aws_ssm_parameter.s3_log_bucket.arn}"
         }
 EOF
 
