@@ -144,7 +144,7 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_secret_key_base" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_device_ssm_ses_port" {
+resource "aws_ssm_parameter" "ses_port" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SES_PORT"
   type      = "String"
   value     = "587"
@@ -386,14 +386,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        ],
        "secrets": [
           ${local.ecs_shared_ssm_secrets},
-          {
-            "name": "CLUSTER_NAME",
-            "valueFrom": "${aws_ssm_parameter.cluster_name.arn}"
-          },
-          {
-            "name": "AWS_REGION",
-            "valueFrom": "${aws_ssm_parameter.aws_region.arn}"
-          }
+          ${local.ecs_daw_shared_ssm_secrets}
         ],
        "volumesFrom": [],
        "mountPoints": [],
