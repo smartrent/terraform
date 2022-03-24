@@ -403,10 +403,6 @@ resource "aws_ecs_task_definition" "api_task_definition" {
           ${local.ecs_shared_ssm_secrets},
           ${local.ecs_daw_shared_ssm_secrets},
           ${local.ecs_da_shared_ssm_secrets}
-          {
-            "name": "CA_HOST",
-            "valueFrom": "${aws_ssm_parameter.ca_host.arn}"
-          }
         ],
        "volumesFrom": [],
        "mountPoints": [],
