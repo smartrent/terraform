@@ -404,6 +404,10 @@ resource "aws_ecs_task_definition" "api_task_definition" {
           {
             "name": "CLUSTER_NAME",
             "valueFrom": "${aws_ssm_parameter.cluster_name.arn}"
+          },
+          {
+            "name": "AWS_REGION",
+            "valueFrom": "${aws_ssm_parameter.aws_region.arn}"
           }
         ],
        "volumesFrom": [],
