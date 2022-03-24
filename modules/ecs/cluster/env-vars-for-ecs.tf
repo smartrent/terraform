@@ -85,7 +85,7 @@ EOF
   fire_lens_container = <<EOF
   {
     "essential": true,
-    "image": "906394416424.dkr.ecr.${var.aws_region}.amazonaws.com/aws-for-fluent-bit:latest",
+    "image": "906394416424.dkr.ecr.${var.aws_region}.amazonaws.com/aws-for-fluent-bit:stable",
     "name": "log_router",
     "cpu": 0,
     "user": "0",
