@@ -126,7 +126,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_host" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_ca_host" {
+resource "aws_ssm_parameter" "ca_host" {
   name      = "/${local.app_name}/${terraform.workspace}/CA_HOST"
   type      = "String"
   value     = var.ca_host
@@ -394,7 +394,11 @@ resource "aws_ecs_task_definition" "api_task_definition" {
        ],
        "secrets": [
           ${local.ecs_shared_ssm_secrets},
-          ${local.ecs_daw_shared_ssm_secrets}
+          ${local.ecs_daw_shared_ssm_secrets},
+          {
+            "name": "CA_HOST",
+            "valueFrom": "${aws_ssm_parameter.ca_host.arn}"
+          }
         ],
        "volumesFrom": [],
        "mountPoints": [],
