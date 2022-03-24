@@ -118,7 +118,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_port" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_host" {
+resource "aws_ssm_parameter" "host" {
   name      = "/${local.app_name}/${terraform.workspace}/HOST"
   type      = "String"
   value     = var.host_name

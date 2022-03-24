@@ -62,6 +62,13 @@ EOF
         }
 EOF
 
+  ecs_dac_shared_ssm_secrets = <<EOF
+        {
+            "name": "HOST",
+            "valueFrom": "${aws_ssm_parameter.host.arn}"
+        }
+EOF
+
   ecs_shared_env_vars = <<EOF
         { "name" : "MIX_ENV", "value" : "${var.profile}" },
         { "name" : "MAX_ATTEMPTS_BEFORE_MANUAL_VERIFICATION", "value" : "${var.max_attempts_before_manual_verification}" },
