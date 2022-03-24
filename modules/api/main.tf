@@ -180,7 +180,7 @@ resource "aws_ssm_parameter" "database_url" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_secret_erl_cookie" {
+resource "aws_ssm_parameter" "erl_cookie" {
   name      = "/${local.app_name}/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
   value     = var.erl_cookie
@@ -188,7 +188,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_secret_erl_cookie" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_ssl_bucket" {
+resource "aws_ssm_parameter" "s3_ssl_bucket" {
   name      = "/${local.app_name}/${terraform.workspace}/S3_SSL_BUCKET"
   type      = "String"
   value     = var.ca_bucket
@@ -196,7 +196,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_ssl_bucket" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_log_bucket_name" {
+resource "aws_ssm_parameter" "s3_log_bucket" {
   name      = "/${local.app_name}/${terraform.workspace}/S3_LOG_BUCKET_NAME"
   type      = "String"
   value     = var.log_bucket
@@ -204,7 +204,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_log_bucket_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/${local.app_name}/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = local.app_name
@@ -212,7 +212,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_app_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_cluster" {
+resource "aws_ssm_parameter" "cluster_name" {
   name      = "/${local.app_name}/${terraform.workspace}/CLUSTER"
   type      = "String"
   value     = var.cluster.name
@@ -220,7 +220,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_cluster" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_aws_region" {
+resource "aws_ssm_parameter" "aws_region" {
   name      = "/${local.app_name}/${terraform.workspace}/AWS_REGION"
   type      = "String"
   value     = var.region
@@ -228,7 +228,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_aws_region" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_port" {
+resource "aws_ssm_parameter" "port" {
   name      = "/${local.app_name}/${terraform.workspace}/PORT"
   type      = "String"
   value     = 80
@@ -236,7 +236,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_port" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_host" {
+resource "aws_ssm_parameter" "host" {
   name      = "/${local.app_name}/${terraform.workspace}/HOST"
   type      = "String"
   value     = var.host_name
@@ -244,7 +244,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_host" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_ca_host" {
+resource "aws_ssm_parameter" "ca_host" {
   name      = "/${local.app_name}/${terraform.workspace}/CA_HOST"
   type      = "String"
   value     = var.ca_host
@@ -252,7 +252,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_ca_host" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_bucket_name" {
+resource "aws_ssm_parameter" "s3_bucket_name" {
   name      = "/${local.app_name}/${terraform.workspace}/S3_BUCKET_NAME"
   type      = "String"
   value     = var.app_bucket
@@ -260,7 +260,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_bucket_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_secret_secret_key_base" {
+resource "aws_ssm_parameter" "secret_key_base" {
   name      = "/${local.app_name}/${terraform.workspace}/SECRET_KEY_BASE"
   type      = "SecureString"
   value     = var.secret_key_base
@@ -268,7 +268,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_secret_secret_key_base" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_ses_port" {
+resource "aws_ssm_parameter" "ses_port" {
   name      = "/${local.app_name}/${terraform.workspace}/SES_PORT"
   type      = "String"
   value     = "587"
@@ -276,7 +276,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_ses_port" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_ses_server" {
+resource "aws_ssm_parameter" "ses_server" {
   name      = "/${local.app_name}/${terraform.workspace}/SES_SERVER"
   type      = "String"
   value     = "email-smtp.${var.region}.amazonaws.com"
@@ -294,7 +294,7 @@ resource "aws_ssm_parameter" "ses_from_email" {
 
 # Set lifecycle parameter for SMTP creds to avoid sensitive info in tfvars
 # To accommodate for AWS SES Access Keys generated
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_smtp_username" {
+resource "aws_ssm_parameter" "smtp_username" {
   name      = "/${local.app_name}/${terraform.workspace}/SMTP_USERNAME"
   type      = "SecureString"
   value     = var.smtp_password
@@ -306,7 +306,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_smtp_username" {
   }
 }
 
-resource "aws_ssm_parameter" "nerves_hub_api_ssm_secret_smtp_password" {
+resource "aws_ssm_parameter" "smtp_password" {
   name      = "/${local.app_name}/${terraform.workspace}/SMTP_PASSWORD"
   type      = "SecureString"
   value     = var.smtp_username
