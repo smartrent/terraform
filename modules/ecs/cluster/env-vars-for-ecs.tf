@@ -6,6 +6,10 @@ locals {
             "valueFrom": "${aws_ssm_parameter.database_url.arn}"
         },
         {
+            "name": "ERL_COOKIE",
+            "valueFrom": "${aws_ssm_parameter.erl_cookie.arn}"
+        },
+        {
             "name": "SECRET_KEY_BASE",
             "valueFrom": "${aws_ssm_parameter.secret_key_base.arn}"
         }

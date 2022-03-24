@@ -57,7 +57,7 @@ resource "aws_ssm_parameter" "nerves_hub_billing_ssm_secret_db_url" {
   overwrite = true
 }
 
-resource "aws_ssm_parameter" "nerves_hub_billing_ssm_secret_erl_cookie" {
+resource "aws_ssm_parameter" "erl_cookie" {
   name      = "/nerves_hub_billing/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
   value     = var.erl_cookie

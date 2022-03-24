@@ -124,7 +124,7 @@ resource "aws_ssm_parameter" "database_url" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_erl_cookie" {
+resource "aws_ssm_parameter" "erl_cookie" {
   name      = "/nerves_hub_ca/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
   value     = var.erl_cookie
