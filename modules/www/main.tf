@@ -412,7 +412,7 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        ],
        "secrets": [
           ${local.ecs_shared_ssm_secrets},
-          ${local.ecs_daw_shared_ssm_secrets}
+          ${local.ecs_device_api_www_shared_ssm_secrets}
         ],
        "volumesFrom": [],
        "mountPoints": [],
