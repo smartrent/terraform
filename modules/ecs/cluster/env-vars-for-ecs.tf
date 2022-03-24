@@ -10,6 +10,10 @@ locals {
             "valueFrom": "${aws_ssm_parameter.erl_cookie.arn}"
         },
         {
+            "name": "APP_NAME",
+            "valueFrom": "${aws_ssm_parameter.app_name.arn}"
+        },
+        {
             "name": "SECRET_KEY_BASE",
             "valueFrom": "${aws_ssm_parameter.secret_key_base.arn}"
         },
