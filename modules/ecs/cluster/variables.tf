@@ -43,3 +43,8 @@ variable "tags" {
     terraform = true
   }
 }
+
+variable "datadog_image" {
+  description = "Datadog container image"
+  type = string
+}
