@@ -386,8 +386,10 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        ],
        "secrets": [
           ${local.ecs_shared_ssm_secrets},
-          ${local.ecs_daw_shared_ssm_secrets},
-          ${local.ecs_da_shared_ssm_secrets}
+          {
+            "name": "CLUSTER_NAME",
+            "valueFrom": "${aws_ssm_parameter.cluster_name.arn}"
+          }
         ],
        "volumesFrom": [],
        "mountPoints": [],
