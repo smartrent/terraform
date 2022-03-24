@@ -124,7 +124,7 @@ resource "aws_ssm_parameter" "database_url" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_erl_cookie" {
+resource "aws_ssm_parameter" "erl_cookie" {
   name      = "/nerves_hub_ca/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
   value     = var.erl_cookie
@@ -132,7 +132,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_erl_cookie" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_s3_bucket" {
+resource "aws_ssm_parameter" "s3_bucket_name" {
   name      = "/nerves_hub_ca/${terraform.workspace}/S3_BUCKET"
   type      = "String"
   value     = aws_s3_bucket.ca_application_data.bucket
@@ -140,7 +140,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_s3_bucket" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_app_name" {
+resource "aws_ssm_parameter" "app_name" {
   name      = "/nerves_hub_ca/${terraform.workspace}/APP_NAME"
   type      = "String"
   value     = "nerves_hub_ca"
@@ -148,7 +148,7 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_app_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_ca_ssm_host" {
+resource "aws_ssm_parameter" "host" {
   name      = "/nerves_hub_ca/${terraform.workspace}/HOST"
   type      = "String"
   value     = var.host_name
@@ -346,7 +346,8 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
          ${local.ecs_shared_env_vars}
        ],
        "secrets": [
-          ${local.ecs_shared_ssm_secrets}
+          ${local.ecs_shared_ssm_secrets},
+          ${local.ecs_dac_shared_ssm_secrets}
         ],
        "volumesFrom": [],
        "mountPoints": [],
