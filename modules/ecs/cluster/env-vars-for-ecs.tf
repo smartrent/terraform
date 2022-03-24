@@ -77,10 +77,8 @@ EOF
         { "name" : "MIX_ENV", "value" : "${var.profile}" },
         { "name" : "MAX_ATTEMPTS_BEFORE_MANUAL_VERIFICATION", "value" : "${var.max_attempts_before_manual_verification}" },
         { "name" : "APP_NAME", "value" : "${local.bash_friendly_app_name}" },
-        { "name" : "HOST", "value" : "${var.host_name}" },
         { "name" : "PORT", "value" : "8080" },
         { "name" : "LOGGER_LEVEL", "value" : "${var.log_level}" },
-        { "name" : "S3_BUCKET_NAME", "value" : "${var.bucket_name}" },
         { "name" : "STATSD_PORT", "value" : "8125" }
 EOF
 
