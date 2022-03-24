@@ -1,7 +1,5 @@
 locals {
 
-<<<<<<< HEAD
-=======
   ecs_shared_ssm_secrets = <<EOF
         {
             "name": "DATABASE_URL",
@@ -63,8 +61,6 @@ EOF
             "valueFrom": "${aws_ssm_parameter.s3_log_bucket.arn}"
         }
 EOF
-
->>>>>>> 38bdde7 (daw (acronym for device, api, www) shared ssm secrets)
   ecs_shared_env_vars = <<EOF
         { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
         { "name" : "APP_NAME", "value" : "${local.bash_friendly_app_name}" }
