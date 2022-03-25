@@ -188,7 +188,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_secret_erl_cookie" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "s3_ssl_bucket" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_ssl_bucket" {
   name      = "/${local.app_name}/${terraform.workspace}/S3_SSL_BUCKET"
   type      = "String"
   value     = var.ca_bucket
@@ -196,7 +196,7 @@ resource "aws_ssm_parameter" "s3_ssl_bucket" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "s3_log_bucket" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_log_bucket_name" {
   name      = "/${local.app_name}/${terraform.workspace}/S3_LOG_BUCKET_NAME"
   type      = "String"
   value     = var.log_bucket
