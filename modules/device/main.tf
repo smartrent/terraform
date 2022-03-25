@@ -252,7 +252,7 @@ resource "aws_ssm_parameter" "secret_key_base" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "ses_port" {
+resource "aws_ssm_parameter" "nerves_hub_device_ssm_ses_port" {
   name      = "/${local.device_app_name}/${terraform.workspace}/SES_PORT"
   type      = "String"
   value     = "587"
