@@ -116,7 +116,7 @@ resource "null_resource" "sync_ca_application_data_ssl" {
 }
 
 # SSM
-resource "aws_ssm_parameter" "database_url" {
+resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_db_url" {
   name      = "/nerves_hub_ca/${terraform.workspace}/DATABASE_URL"
   type      = "SecureString"
   value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}"

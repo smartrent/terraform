@@ -64,7 +64,7 @@ resource "aws_lb_listener" "api_lb_listener" {
 }
 
 # SSM
-resource "aws_ssm_parameter" "database_url" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_secret_db_url" {
   name      = "/${local.app_name}/${terraform.workspace}/DATABASE_URL"
   type      = "SecureString"
   value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}"
@@ -176,7 +176,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_ses_server" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "ses_from_email" {
+resource "aws_ssm_parameter" "nerves_hub_www_ses_from_email" {
   name      = "/${local.app_name}/${terraform.workspace}/FROM_EMAIL"
   type      = "SecureString"
   value     = var.from_email
