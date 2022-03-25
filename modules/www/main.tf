@@ -595,11 +595,7 @@ resource "aws_ecs_service" "www_ecs_service" {
 }
 
 resource "aws_ssm_parameter" "datadog_key" {
-<<<<<<< HEAD
   name   = "/${local.ssm_prefix}/DATADOG_KEY"
-=======
-  name   = "${local.ssm_prefix}DATADOG_KEY"
->>>>>>> b0be688 (test on www)
   type   = "SecureString"
   value  = "ChangeMeInTheWebConsole"
   key_id = aws_kms_key.for_ssm_params.key_id
