@@ -2,7 +2,8 @@ locals {
 
   ecs_shared_env_vars = <<EOF
         { "name" : "ENVIRONMENT", "value" : "${var.environment}" },
-        { "name" : "APP_NAME", "value" : "${local.bash_friendly_app_name}" }
+        { "name" : "APP_NAME", "value" : "${local.bash_friendly_app_name}" },
+        { "name" : "TASK_NAME:, "value" : "${local.web_task_name}" }
 EOF
 
   fire_lens_container = <<EOF
