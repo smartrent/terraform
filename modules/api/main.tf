@@ -252,7 +252,7 @@ resource "aws_ssm_parameter" "ca_host" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "s3_bucket_name" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_s3_bucket_name" {
   name      = "/${local.app_name}/${terraform.workspace}/S3_BUCKET_NAME"
   type      = "String"
   value     = var.app_bucket
