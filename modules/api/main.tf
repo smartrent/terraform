@@ -104,7 +104,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_app_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "cluster_name" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_cluster" {
   name      = "/${local.app_name}/${terraform.workspace}/CLUSTER"
   type      = "String"
   value     = var.cluster.name
@@ -400,9 +400,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
          ${local.ecs_shared_env_vars}
        ],
        "secrets": [
-          ${local.ecs_shared_ssm_secrets},
-          ${local.ecs_device_api_www_shared_ssm_secrets},
-          ${local.ecs_device_api_shared_ssm_secrets}
+          ${local.ecs_shared_ssm_secrets}
         ],
        "volumesFrom": [],
        "mountPoints": [],
