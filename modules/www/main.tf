@@ -282,7 +282,7 @@ resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_secret_key_base" {
 }
 
 resource "aws_ssm_parameter" "nerves_hub_www_ses_from_email" {
-  name      = "/${var.app_name}/${terraform.workspace}/FROM_EMAIL"
+  name      = "/nerves_hub_www/${terraform.workspace}/FROM_EMAIL"
   type      = "SecureString"
   value     = var.from_email
   overwrite = true
