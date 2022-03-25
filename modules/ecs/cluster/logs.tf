@@ -4,4 +4,6 @@ module "log_config" {
   datadog_key_ssm_arn = aws_ssm_parameter.datadog_key.arn
   environment_name    = var.profile
   task_name           = local.web_task_name
+  datadog_image       = var.datadog_image
+  region              = var.aws_region
 }
