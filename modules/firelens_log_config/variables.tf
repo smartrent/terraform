@@ -14,7 +14,7 @@ variable "task_name" {
   type = string
 }
 
-variable "docker_image_tag" {
+variable "datadog_image" {
   type = string
 }
 
@@ -23,7 +23,7 @@ variable "dd_source" {
   default = "elixir"
 }
 
-variable "region" {
+variable "aws_region" {
   type        = string
   description = "The AWS Region"
 }
