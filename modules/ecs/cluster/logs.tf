@@ -5,5 +5,5 @@ module "log_config" {
   environment_name    = var.profile
   task_name           = local.web_task_name
   datadog_image       = var.datadog_image
-  region              = var.aws_region
+  aws_region          = var.aws_region
 }
