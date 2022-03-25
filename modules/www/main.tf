@@ -410,10 +410,6 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
-       "secrets": [
-          ${local.ecs_shared_ssm_secrets},
-          ${local.ecs_device_api_www_shared_ssm_secrets}
-        ],
        "volumesFrom": [],
        "mountPoints": [],
        "logConfiguration": {

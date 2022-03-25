@@ -399,9 +399,6 @@ resource "aws_ecs_task_definition" "api_task_definition" {
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
-       "secrets": [
-          ${local.ecs_shared_ssm_secrets}
-        ],
        "volumesFrom": [],
        "mountPoints": [],
        "logConfiguration": {
