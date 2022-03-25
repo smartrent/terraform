@@ -228,7 +228,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_aws_region" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "port" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_port" {
   name      = "/${local.app_name}/${terraform.workspace}/PORT"
   type      = "String"
   value     = 80
