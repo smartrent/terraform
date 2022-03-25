@@ -1,7 +1,7 @@
 # This is just a module to provide a template for creating a log configuration for an ECS task definition.
 
 locals {
-  tld = var.region == "eu-central-1" ? "eu" : "com"
+  tld = var.aws_region == "eu-central-1" ? "eu" : "com"
 
   ecs_shared_env_vars = <<EOF
         { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
