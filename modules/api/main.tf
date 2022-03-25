@@ -102,7 +102,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_cluster" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "aws_region" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_aws_region" {
   name      = "/${local.app_name}/${terraform.workspace}/AWS_REGION"
   type      = "String"
   value     = var.region
