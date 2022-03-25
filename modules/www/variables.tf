@@ -43,3 +43,15 @@ variable "tags" {
     terraform = true
   }
 }
+
+variable "app_name" {
+  type = string
+}
+
+variable "web_task_name" {
+  type = string
+}
+
+variable "environment_name" {
+  type = string
+}
