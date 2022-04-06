@@ -18,6 +18,18 @@ variable "smtp_username" {}
 variable "smtp_password" {}
 variable "service_count" {}
 variable "task_execution_role" {}
+variable "alb" {
+  default = false
+}
+variable "nlb" {
+  default = true
+}
+variable "certificate_arn" {
+  default = ""
+}
+variable "lb_security_group_id" {
+  default = ""
+}
 variable "from_email" {
   default = "no-reply@nerves-hub.org"
 }
