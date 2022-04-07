@@ -33,9 +33,6 @@ variable "nlb" {
 variable "certificate_arn" {
   default = ""
 }
-variable "lb_security_group_id" {
-  default = ""
-}
 variable "from_email" {
   default = "no-reply@nerves-hub.org"
 }
@@ -50,6 +47,10 @@ variable "access_logs_prefix" {
 }
 variable "internal_lb" {
   description = "Whether or not the load balancer is internal"
+  default     = false
+}
+variable "internal_alb" {
+  description = "Whether or not the application load balancer is internal"
   default     = false
 }
 variable "tags" {

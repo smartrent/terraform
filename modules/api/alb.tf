@@ -27,9 +27,9 @@ resource "aws_lb_target_group" "api_alb_tg" {
 resource "aws_lb" "api_alb" {
   count              = var.alb ? 1 : 0
   name               = "nerves-hub-${terraform.workspace}-api-alb"
-  internal           = var.internal_lb
+  internal           = var.internal_alb
   load_balancer_type = "application"
-  security_groups    = [var.lb_security_group_id]
+  security_groups    = [aws_security_group.lb_security_group.id]
   subnets            = var.vpc.public_subnets
 
   access_logs {
