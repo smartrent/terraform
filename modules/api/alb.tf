@@ -29,7 +29,7 @@ resource "aws_lb" "api_alb" {
   name               = "nerves-hub-${terraform.workspace}-api-alb"
   internal           = var.internal_alb
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb_security_group.id]
+  security_groups    = [aws_security_group.port80_lb_security_group.id, aws_security_group.port443_lb_security_group.id]
   subnets            = var.vpc.public_subnets
 
   access_logs {
@@ -72,9 +72,9 @@ resource "aws_lb_listener" "https_alb_listener" {
   }
 }
 
-resource "aws_security_group" "lb_security_group" {
-  name        = "nerves-hub-${terraform.workspace}-api-alb"
-  description = "nerves-hub ${terraform.workspace} alb"
+resource "aws_security_group" "port80_lb_security_group" {
+  name        = "nerves-hub-${terraform.workspace}-api-alb-port80"
+  description = "nerves-hub ${terraform.workspace} alb port 80"
   vpc_id      = var.vpc.vpc_id
 
   ingress {
@@ -85,6 +85,30 @@ resource "aws_security_group" "lb_security_group" {
     cidr_blocks      = var.allow_list_ipv4
     ipv6_cidr_blocks = var.allow_list_ipv6
   }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+
+  tags = merge(var.tags, {
+    Name = "nerves-hub-${terraform.workspace}-api alb"
+  })
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_security_group" "port443_lb_security_group" {
+  name        = "nerves-hub-${terraform.workspace}-api-alb-port443"
+  description = "nerves-hub ${terraform.workspace} alb port 443"
+  vpc_id      = var.vpc.vpc_id
 
   ingress {
     protocol  = "tcp"
