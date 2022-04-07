@@ -1,7 +1,7 @@
 # Load Balancer
 resource "aws_lb_target_group" "api_alb_tg" {
   count                = var.alb ? 1 : 0
-  name                 = "nerves-hub-${terraform.workspace}-api-tg-${random_integer.target_group_id.result}"
+  name                 = "nerves-hub-${terraform.workspace}-api-tg"
   port                 = 443
   protocol             = "HTTPS"
   target_type          = "ip"
@@ -69,6 +69,48 @@ resource "aws_lb_listener" "https_alb_listener" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.api_alb_tg[count.index].arn
+  }
+}
+
+resource "aws_security_group" "lb_security_group" {
+  name        = "nerves-hub-${terraform.workspace}-api-alb"
+  description = "nerves-hub ${terraform.workspace} alb"
+  vpc_id      = var.vpc.vpc_id
+
+  ingress {
+    protocol  = "tcp"
+    from_port = 80
+    to_port   = 80
+
+    cidr_blocks      = var.allow_list_ipv4
+    ipv6_cidr_blocks = var.allow_list_ipv6
+  }
+
+  ingress {
+    protocol  = "tcp"
+    from_port = 443
+    to_port   = 443
+
+    cidr_blocks      = var.allow_list_ipv4
+    ipv6_cidr_blocks = var.allow_list_ipv6
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+
+  tags = merge(var.tags, {
+    Name = "nerves-hub-${terraform.workspace}-api alb"
+  })
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

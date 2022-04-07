@@ -18,6 +18,12 @@ variable "smtp_username" {}
 variable "smtp_password" {}
 variable "service_count" {}
 variable "task_execution_role" {}
+variable "allow_list_ipv4" {
+  default = []
+}
+variable "allow_list_ipv6" {
+  default = []
+}
 variable "alb" {
   default = false
 }
