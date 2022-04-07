@@ -77,7 +77,7 @@ locals {
       "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
     }
   ],
-  ${module.log_config.log_configuration}
+  ${module.firelens_log_config.log_configuration}
 }
 EOF
 }
