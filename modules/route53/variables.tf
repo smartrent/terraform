@@ -5,6 +5,9 @@ variable "api_dns_record_name" {}
 variable "device_dns_record_name" {}
 variable "www_dns_record_name" {}
 variable "dns_zone" {}
+variable "is_api_alb" {
+  default = false
+}
 
 variable "tags" {
   description = "A mapping of tags to assign to the resources"
