@@ -1,5 +1,6 @@
 locals {
   app_name = "nerves_hub_api"
+  ssm_prefix = "nerves_hub_api"
 }
 
 resource "random_integer" "target_group_id" {
@@ -421,6 +422,19 @@ resource "aws_ecs_task_definition" "api_task_definition" {
 
 DEFINITION
 
+}
+
+resource "aws_ssm_parameter" "datadog_key" {
+  name   = "${local.ssm_prefix}DATADOG_KEY"
+  type   = "SecureString"
+  value  = "ChangeMeInTheWebConsole"
+  key_id = aws_kms_key.for_ssm_params.key_id
+
+  tags = var.tags
+
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 resource "aws_ecs_service" "api_ecs_service" {
