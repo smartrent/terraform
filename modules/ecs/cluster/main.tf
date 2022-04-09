@@ -68,3 +68,15 @@ resource "aws_cloudwatch_log_group" "app" {
   name              = aws_ecs_cluster.ecs_cluster.name
   retention_in_days = terraform.workspace == "staging" ? 1 : var.log_retention
 }
+
+module "firelens_log_config" {
+  app_name            = var.app_name
+  datadog_key_ssm_arn = aws_ssm_parameter.datadog_key.arn
+  environment_name    = var.environment_name
+  task_name           = local.app_name
+  datadog_image       = var.datadog_image
+  aws_region          = var.aws_region
+  ssm_prefix          = var.ssm_prefix
+
+  tags                = var.tags
+}
