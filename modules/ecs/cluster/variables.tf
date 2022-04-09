@@ -52,3 +52,7 @@ variable "datadog_image" {
 variable "app_name" {
   type = string
 }
+
+variable "ssm_prefix" {
+  type = string
+}
