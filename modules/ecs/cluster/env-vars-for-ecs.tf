@@ -1,7 +1,7 @@
 locals {
 
   ecs_shared_env_vars = <<EOF
-        { "name" : "ENVIRONMENT", "value" : "${var.environment}" },
+        { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
         { "name" : "APP_NAME", "value" : "${local.bash_friendly_app_name}" }
 EOF
 
