@@ -6,7 +6,7 @@ locals {
 data "aws_caller_identity" "current" {}
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "nerves-hub-${var.environment}"
+  name = "nerves-hub-${var.environment_name}"
 
   setting {
     name  = "containerInsights"
