@@ -445,7 +445,7 @@ resource "aws_ssm_parameter" "datadog_key" {
 }
 
 resource "aws_kms_key" "for_ssm_params" {
-  description = "KMS key for ${var.app_name} ${var.environment_name} Secrets"
+  description = "KMS key for ${local.app_name} ${var.environment_name} Secrets"
 
   tags = var.tags
 }
