@@ -393,10 +393,10 @@ resource "aws_ecs_task_definition" "device_task_definition" {
             "Name": "datadog",
             "compress": "gzip",
             "Host": "http-intake.logs.datadoghq.com",
-            "dd_service": "${var.app_name}",
+            "dd_service": "${local.device_app_name}",
             "dd_source": "elixir",
             "dd_message_key": "log",
-            "dd_tags": "env:${var.profile},application:${var.app_name}-${var.profile},version:${var.docker_image}",
+            "dd_tags": "env:${var.profile},application:${local.device_app_name}-${var.profile},version:${var.docker_image}",
             "TLS": "on",
             "provider": "ecs"
           },
@@ -431,7 +431,7 @@ resource "aws_ssm_parameter" "datadog_key" {
 }
 
 resource "aws_kms_key" "for_ssm_params" {
-  description = "KMS key for ${var.app_name} ${var.environment_name} Secrets"
+  description = "KMS key for ${local.device_app_name} ${var.environment_name} Secrets"
 
   tags = var.tags
 }
