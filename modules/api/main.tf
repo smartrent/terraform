@@ -444,6 +444,12 @@ resource "aws_ssm_parameter" "datadog_key" {
   }
 }
 
+resource "aws_kms_key" "for_ssm_params" {
+  description = "KMS key for ${var.app_name} ${var.environment_name} Secrets"
+
+  tags = var.tags
+}
+
 resource "aws_ecs_service" "api_ecs_service" {
   count   = var.nlb ? 1 : 0
   name    = "nerves-hub-api"
