@@ -1,5 +1,10 @@
 # nerves_hub_ca
 
+locals {
+  app_name = "nerves_hub_ca"
+  ssm_prefix = "nerves_hub_ca"
+}
+
 # Security Groups
 resource "aws_security_group" "ca_security_group" {
   name        = "nerves-hub-${terraform.workspace}-ca-sg"

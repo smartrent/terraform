@@ -1,5 +1,10 @@
 # nerves_hub_www
 
+locals {
+  app_name = "nerves_hub_www"
+  ssm_prefix = "nerves_hub_www"
+}
+
 resource "random_integer" "target_group_id" {
   min = 1
   max = 999
