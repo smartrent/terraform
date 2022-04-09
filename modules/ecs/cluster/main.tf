@@ -1,7 +1,6 @@
 locals {
   current_account_id     = data.aws_caller_identity.current.account_id
   bash_friendly_app_name = replace(var.app_name, "-", "_")
-  web_task_name          = "${var.app_name}-datadog-agent"
 }
 
 data "aws_caller_identity" "current" {}
