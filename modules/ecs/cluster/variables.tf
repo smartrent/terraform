@@ -56,3 +56,7 @@ variable "app_name" {
 variable "ssm_prefix" {
   type = string
 }
+
+variable "environment_name" {
+  type = string
+}
