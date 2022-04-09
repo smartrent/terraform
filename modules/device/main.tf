@@ -422,7 +422,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
             "dd_service": "${local.device_app_name}",
             "dd_source": "elixir",
             "dd_message_key": "log",
-            "dd_tags": "env:${var.profile},application:${local.device_app_name}-${var.profile},version:${var.docker_image}",
+            "dd_tags": "env:${var.environment_name},application:${local.device_app_name}-${var.environment_name},version:${var.docker_image}",
             "TLS": "on",
             "provider": "ecs"
           },
