@@ -2,6 +2,7 @@
 
 locals {
   device_app_name = "nerves_hub_device"
+  ssm_prefix = "nerves_hub_device"
 }
 
 resource "random_integer" "target_group_id" {

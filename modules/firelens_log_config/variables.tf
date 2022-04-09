@@ -31,3 +31,7 @@ variable "aws_region" {
 output "log_configuration" {
   value = local.log_configuration
 }
+
+variable "ssm_prefix" {
+  type = string
+}
