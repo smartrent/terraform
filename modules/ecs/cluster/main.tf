@@ -76,7 +76,7 @@ module "firelens_log_config" {
   environment_name    = var.environment_name
   task_name           = local.app_name
   datadog_image       = var.datadog_image
-  aws_region          = var.aws_region
+  region              = var.region
   ssm_prefix          = var.ssm_prefix
 
   tags                = var.tags
