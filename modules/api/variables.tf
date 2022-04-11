@@ -76,3 +76,7 @@ variable "datadog_image" {
   description = "Datadog container image"
   type = string
 }
+
+variable "aws_region" {
+  type = string
+}
