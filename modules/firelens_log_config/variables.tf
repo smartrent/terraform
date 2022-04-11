@@ -23,7 +23,7 @@ variable "dd_source" {
   default = "elixir"
 }
 
-variable "aws_region" {
+variable "region" {
   type        = string
   description = "The AWS Region"
 }
