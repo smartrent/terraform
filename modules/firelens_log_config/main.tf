@@ -4,8 +4,8 @@ locals {
   tld = var.region == "eu-central-1" ? "eu" : "com"
 
   ecs_shared_env_vars = <<EOF
-        { "name" : "ENVIRONMENT", "value" : "${var.environment}" },
-        { "name" : "APP_NAME", "value" : "${local.bash_friendly_app_name}" }
+        { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
+        { "name" : "APP_NAME", "value" : "${var.app_name}" }
 EOF
 
   fire_lens_container = <<EOF
