@@ -1,7 +1,33 @@
 # This is just a module to provide a template for creating a log configuration for an ECS task definition.
 
 locals {
-  tld = var.aws_region == "eu-central-1" ? "eu" : "com"
+  tld = var.region == "eu-central-1" ? "eu" : "com"
+
+  ecs_shared_env_vars = <<EOF
+        { "name" : "ENVIRONMENT", "value" : "${var.environment}" },
+        { "name" : "APP_NAME", "value" : "${local.bash_friendly_app_name}" }
+EOF
+
+  fire_lens_container = <<EOF
+  {
+    "essential": true,
+    "image": "906394416424.dkr.ecr.${var.region}.amazonaws.com/aws-for-fluent-bit:stable",
+    "name": "log_router",
+    "cpu": 0,
+    "user": "0",
+    "environment": [],
+    "volumesFrom": [],
+    "portMappings": [],
+    "mountPoints": [],
+    "firelensConfiguration": {
+      "type": "fluentbit",
+      "options": {
+        "enable-ecs-log-metadata": "true"
+      }
+    },
+    "memoryReservation": 50
+  }
+EOF
 
   ecs_shared_env_vars = <<EOF
         { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
