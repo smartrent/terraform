@@ -46,3 +46,8 @@ variable "tags" {
 variable "environment_name" {
   type = string
 }
+
+variable "datadog_image" {
+  description = "Datadog container image"
+  type = string
+}
