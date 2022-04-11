@@ -1,4 +1,4 @@
-variable "aws_region" {
+variable "region" {
   description = "The AWS region to create things in."
 }
 
