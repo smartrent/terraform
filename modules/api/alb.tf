@@ -29,7 +29,7 @@ resource "aws_lb" "api_alb" {
   name               = "nerves-hub-${terraform.workspace}-api-alb"
   internal           = var.internal_alb
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.port80_lb_security_group.id, aws_security_group.port443_lb_security_group.id]
+  security_groups    = [aws_security_group.port80_lb_security_group[count.index].id, aws_security_group.port443_lb_security_group[count.index].id]
   subnets            = var.vpc.public_subnets
 
   access_logs {
@@ -73,6 +73,7 @@ resource "aws_lb_listener" "https_alb_listener" {
 }
 
 resource "aws_security_group" "port80_lb_security_group" {
+  count       = var.alb ? 1 : 0
   name        = "nerves-hub-${terraform.workspace}-api-alb-port80"
   description = "nerves-hub ${terraform.workspace} alb port 80"
   vpc_id      = var.vpc.vpc_id
@@ -106,6 +107,7 @@ resource "aws_security_group" "port80_lb_security_group" {
 }
 
 resource "aws_security_group" "port443_lb_security_group" {
+  count       = var.alb ? 1 : 0
   name        = "nerves-hub-${terraform.workspace}-api-alb-port443"
   description = "nerves-hub ${terraform.workspace} alb port 443"
   vpc_id      = var.vpc.vpc_id
