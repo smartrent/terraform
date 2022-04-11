@@ -70,7 +70,7 @@ resource "aws_cloudwatch_log_group" "app" {
 }
 
 module "firelens_log_config" {
-  source              = "../firelens_log_config"
+  source              = "../../firelens_log_config"
   app_name            = var.app_name
   datadog_key_ssm_arn = aws_ssm_parameter.datadog_key.arn
   environment_name    = var.environment_name
