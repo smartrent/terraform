@@ -6,7 +6,8 @@ variable "device_dns_record_name" {}
 variable "www_dns_record_name" {}
 variable "dns_zone" {}
 variable "is_api_alb" {
-  default = false
+  description = "Whether or not the api has an application load balancer"
+  default     = false
 }
 
 variable "tags" {
