@@ -613,3 +613,16 @@ resource "aws_kms_key" "for_ssm_params" {
 
   tags = var.tags
 }
+
+module "firelens_log_config" {
+  source              = "../../firelens_log_config"
+  app_name            = local.app_name
+  datadog_key_ssm_arn = aws_ssm_parameter.datadog_key.arn
+  environment_name    = var.environment_name
+  task_name           = local.app_name
+  datadog_image       = var.datadog_image
+  aws_region          = var.aws_region
+  ssm_prefix          = local.ssm_prefix
+
+  tags                = var.tags
+}
