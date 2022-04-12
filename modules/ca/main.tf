@@ -2,7 +2,7 @@
 
 locals {
   app_name = "nerves_hub_ca"
-  ssm_prefix = "nerves_hub_ca"
+  ssm_prefix = "NERVES_HUB_CA_"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
