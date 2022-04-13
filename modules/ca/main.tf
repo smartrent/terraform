@@ -2,7 +2,7 @@
 
 locals {
   app_name = "nerves_hub_ca"
-  ssm_prefix = "NERVES_HUB_CA_"
+  ssm_prefix = "nerves_hub_ca"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
@@ -489,7 +489,7 @@ DEFINITION
 }
 
 resource "aws_ssm_parameter" "datadog_key" {
-  name   = "${local.ssm_prefix}DATADOG_KEY"
+  name   = "${local.ssm_prefix}/DATADOG_KEY"
   type   = "SecureString"
   value  = "ChangeMeInTheWebConsole"
   key_id = aws_kms_key.for_ssm_params.key_id
