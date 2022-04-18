@@ -513,7 +513,6 @@ resource "aws_ecs_task_definition" "device_task_definition" {
               "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
             }
           ]
-         }
        }
      },
      ${local.datadog_ecs_agent_task_def}
