@@ -340,25 +340,24 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
       ${module.firelens_log_config.log_configuration}
      },
      {
-       "portMappings": [
-         {
-           "hostPort": 8443,
-           "protocol": "tcp",
-           "containerPort": 8443
-         },
-         {
-           "hostPort": 4369,
-           "protocol": "tcp",
-           "containerPort": 4369
-         }
-       ],
-       "networkMode": "awsvpc",
-       "image": "${var.docker_image}",
-       "essential": true,
-       "privileged": false,
-       "name": "${local.app_name}",
-       "environment": "${local.ecs_shared_env_vars}"
-     }
+        "portMappings": [{
+            "hostPort": 8443,
+            "protocol": "tcp",
+            "containerPort": 8443
+          },
+          {
+            "hostPort": 4369,
+            "protocol": "tcp",
+            "containerPort": 4369
+          }
+        ],
+        "networkMode": "awsvpc",
+        "image": "${var.docker_image}",
+        "essential": true,
+        "privileged": false,
+        "name": "${local.app_name}",
+        "environment": "${local.ecs_shared_env_vars}"
+      }
    ]
 DEFINITION
 
