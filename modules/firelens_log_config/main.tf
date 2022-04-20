@@ -133,5 +133,5 @@ EOF
           "com.datadoghq.tags.service": "${var.app_name}",
           "com.datadoghq.tags.version": "${var.datadog_image}"
         }
-  EOF
-}
+  }
+EOF
