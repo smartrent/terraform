@@ -71,17 +71,10 @@ EOF
           "TLS": "on",
           "provider": "ecs"
         },
-        "secretOptions": [
-          {
-            "name": "apikey",
-            "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
-          }
-        ]
-      },
-      "dockerLabels": {
-        "com.datadoghq.tags.env": "${var.environment_name}",
-        "com.datadoghq.tags.service": "${var.app_name}",
-        "com.datadoghq.tags.version": "${var.datadog_image}"
-      }
-EOF
+        "dockerLabels": {
+          "com.datadoghq.tags.env": "${var.environment_name}",
+          "com.datadoghq.tags.service": "${var.app_name}",
+          "com.datadoghq.tags.version": "${var.datadog_image}"
+        }
+  EOF
 }
