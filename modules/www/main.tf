@@ -418,9 +418,7 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        "essential": true,
        "privileged": false,
        "name": "nerves_hub_www",
-       "environment": [
-         ${local.ecs_shared_env_vars}
-       ],
+       "environment": "${local.ecs_shared_env_vars}",
        "volumesFrom": [],
        "mountPoints": [],
        "logConfiguration": {

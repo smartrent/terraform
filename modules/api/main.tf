@@ -404,9 +404,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
        "essential": true,
        "privileged": false,
        "name": "${local.app_name}",
-       "environment": [
-         ${local.ecs_shared_env_vars}
-       ],
+       "environment": "${local.ecs_shared_env_vars}",
        "volumesFrom": [],
        "mountPoints": [],
        "logConfiguration": {
