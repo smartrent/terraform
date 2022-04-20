@@ -409,7 +409,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
           "secretOptions": [
             {
               "name": "apikey",
-              "valueFrom": "${module.firelens_log_config.aws_ssm_parameter.datadog_key_arn}"
+              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
             }
           ]
        }
