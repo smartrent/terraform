@@ -74,7 +74,7 @@ EOF
       "secretOptions": [
         {
           "name": "apikey",
-          "valueFrom": "${var.datadog_key_ssm_arn}"
+          "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
         }
       ]
     },
