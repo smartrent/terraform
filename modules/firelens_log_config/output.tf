@@ -15,5 +15,5 @@ output "datadog_key_arn" {
 }
 
 output "for_ssm_params" {
-    value = aws_ssm_parameter.for_ssm_params
+    value = aws_kms_key.for_ssm_params
 }
