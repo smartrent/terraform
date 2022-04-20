@@ -24,10 +24,6 @@ variable "region" {
   description = "The AWS Region"
 }
 
-output "log_configuration" {
-  value = local.log_configuration
-}
-
 variable "ssm_prefix" {
   type = string
 }
