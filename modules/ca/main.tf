@@ -336,7 +336,6 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
    [
      ${module.firelens_log_config.fire_lens_container},
      ${module.firelens_log_config.datadog_container},
-     ${module.firelens_log_config.log_configuration},
      {
        "portMappings": [
          {

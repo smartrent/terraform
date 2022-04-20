@@ -369,8 +369,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
   container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
-     ${module.firelens_log_config.datadog_container},
-     ${module.firelens_log_config.log_configuration},
+     ${module.firelens_log_config.datadog_container}
      {
        "portMappings": [
          {
