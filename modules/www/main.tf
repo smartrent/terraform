@@ -439,7 +439,7 @@ resource "aws_ecs_task_definition" "www_task_definition" {
           "secretOptions": [
             {
               "name": "apikey",
-              "valueFrom": "${module.firelens_log_config.aws_ssm_parameter.datadog_key_arn}"
+              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
             }
           ]
        }
@@ -452,7 +452,7 @@ DEFINITION
 depends_on = [
     module.firelens_log_config
   ]
-  
+
 }
 
 resource "aws_ecs_service" "www_ecs_service" {
