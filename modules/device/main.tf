@@ -388,7 +388,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        "image": "${var.docker_image}",
        "essential": true,
        "privileged": false,
-       "name": "${local.app_name}",
+       "name": "${local.device_app_name}",
        "environment": "${local.ecs_shared_env_vars}"
      }
    ]
