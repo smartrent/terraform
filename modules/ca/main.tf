@@ -385,6 +385,10 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
 
 DEFINITION
 
+depends_on = [
+    module.firelens_log_config
+  ]
+
 }
 
 module "firelens_log_config" {

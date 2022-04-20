@@ -449,6 +449,10 @@ resource "aws_ecs_task_definition" "www_task_definition" {
 
 DEFINITION
 
+depends_on = [
+    module.firelens_log_config
+  ]
+  
 }
 
 resource "aws_ecs_service" "www_ecs_service" {

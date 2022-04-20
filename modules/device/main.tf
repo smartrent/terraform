@@ -419,6 +419,10 @@ resource "aws_ecs_task_definition" "device_task_definition" {
 
 DEFINITION
 
+depends_on = [
+    module.firelens_log_config
+  ]
+
   tags = var.tags
 }
 
