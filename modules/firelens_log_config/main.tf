@@ -77,5 +77,35 @@ EOF
           "com.datadoghq.tags.version": "${var.datadog_image}"
         }
   }
-  EOF
+EOF
+
+  log_configuration = <<EOF
+"mountPoints": [],
+"volumesFrom": [],
+"logConfiguration": {
+      "logDriver": "awsfirelens",
+      "options": {
+        "Name": "datadog",
+        "compress": "gzip",
+        "Host": "http-intake.logs.datadoghq.${local.tld}",
+        "dd_service": "${var.app_name}",
+        "dd_source": "${var.dd_source}",
+        "dd_message_key": "log",
+        "dd_tags": "env:${var.environment_name},application:${var.app_name}-${var.environment_name},version:${var.datadog_image},task:${var.task_name}",
+        "TLS": "on",
+        "provider": "ecs"
+      },
+      "secretOptions": [
+        {
+          "name": "apikey",
+          "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+        }
+      ]
+    },
+    "dockerLabels": {
+      "com.datadoghq.tags.env": "${var.environment_name}",
+      "com.datadoghq.tags.service": "${var.app_name}",
+      "com.datadoghq.tags.version": "${var.datadog_image}"
+    }
+EOF
 }
