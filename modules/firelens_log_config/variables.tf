@@ -1,7 +1,3 @@
-variable "datadog_key_ssm_arn" {
-  type = string
-}
-
 variable "environment_name" {
   type = string
 }
