@@ -385,6 +385,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
    [
      ${module.firelens_log_config.fire_lens_container},
      ${module.firelens_log_config.datadog_container},
+     ${module.firelens_log_config.log_configuration},
      {
        "portMappings": [
          {
@@ -424,14 +425,12 @@ resource "aws_ecs_task_definition" "api_task_definition" {
           "secretOptions": [
             {
               "name": "apikey",
-              "valueFrom": ${module.firelens_log_config.datadog_key_arn}
+              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
             }
           ]
        }
-     },
-     ${module.firelens_log_config.log_configuration}
+     }
    ]
-
 DEFINITION
 
 depends_on = [
