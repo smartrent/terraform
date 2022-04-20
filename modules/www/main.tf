@@ -400,6 +400,7 @@ resource "aws_ecs_task_definition" "www_task_definition" {
    [
      ${module.firelens_log_config.fire_lens_container},
      ${module.firelens_log_config.datadog_container},
+     ${module.firelens_log_config.log_configuration},
      {
        "portMappings": [
          {
@@ -417,34 +418,10 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        "image": "${var.docker_image}",
        "essential": true,
        "privileged": false,
-       "name": "nerves_hub_www",
-       "environment": "${local.ecs_shared_env_vars}",
-       "volumesFrom": [],
-       "mountPoints": [],
-       "logConfiguration": {
-         "logDriver": "awsfirelens",
-         "options": {
-            "Name": "datadog",
-            "compress": "gzip",
-            "Host": "http-intake.logs.datadoghq.com",
-            "dd_service": "${local.app_name}",
-            "dd_source": "elixir",
-            "dd_message_key": "log",
-            "dd_tags": "env:${var.environment_name},application:${local.app_name}-${var.environment_name},version:${var.docker_image}",
-            "TLS": "on",
-            "provider": "ecs"
-          },
-          "secretOptions": [
-            {
-              "name": "apikey",
-              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
-            }
-          ]
-       }
-     },
-     ${module.firelens_log_config.log_configuration}
+       "name": "${local.app_name}",
+       "environment": "${local.ecs_shared_env_vars}"
+     }
    ]
-
 DEFINITION
 
 depends_on = [
