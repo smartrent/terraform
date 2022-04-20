@@ -77,4 +77,5 @@ EOF
           "com.datadoghq.tags.version": "${var.datadog_image}"
         }
   }
-EOF
+  EOF
+}
