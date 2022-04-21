@@ -8,6 +8,108 @@ locals {
     { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
     { "name" : "APP_NAME", "value" : "${local.device_app_name}" }
 EOF
+
+  fire_lens_container = <<EOF
+  {
+    "essential": true,
+    "image": "906394416424.dkr.ecr.${var.region}.amazonaws.com/aws-for-fluent-bit:stable",
+    "name": "log_router",
+    "cpu": 0,
+    "user": "0",
+    "environment": [],
+    "volumesFrom": [],
+    "portMappings": [],
+    "mountPoints": [],
+    "firelensConfiguration": {
+      "type": "fluentbit",
+      "options": {
+        "enable-ecs-log-metadata": "true"
+      }
+    },
+    "memoryReservation": 50
+  }
+EOF
+
+ datadog_ecs_agent_task_def = <<EOF
+{
+  "name": "datadog-agent",
+  "image": "${var.datadog_image}",
+  "essential": false,
+  "memoryReservation": 256,
+  "cpu": 10,
+  "mountPoints": [],
+  "volumesFrom": [],
+  "portMappings": [
+    {
+      "containerPort": 8125,
+      "hostPort": 8125,
+      "protocol": "udp"
+    },
+    {
+      "containerPort": 8126,
+      "hostPort": 8126,
+      "protocol": "tcp"
+    }
+  ],
+  "environment": [
+    {
+      "name": "ECS_FARGATE",
+      "value": "true"
+    },
+    {
+      "name": "DD_LOG_LEVEL",
+      "value": "warn"
+    },
+    {
+      "name": "DD_APM_ENABLED",
+      "value": "true"
+    },
+    {
+      "name": "DD_APM_NON_LOCAL_TRAFFIC",
+      "value": "true"
+    },
+    {
+      "name": "DD_SYSTEM_PROBE_ENABLED",
+      "value": "true"
+    },
+    {
+      "name": "DD_PROCESS_AGENT_ENABLED",
+      "value": "true"
+    },
+    {
+      "name": "DD_HEALTH_PORT",
+      "value": "5555"
+    },
+    {
+      "name": "DD_APM_RECEIVER_PORT",
+      "value": "8126"
+    },
+    {
+      "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+      "value": "true"
+    },
+    {
+      "name": "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL",
+      "value": "true"
+    },
+    {
+      "name": "DD_DOGSTATSD_PORT",
+      "value": "8125"
+    },
+    {
+      "name": "DD_DOCKER_LABELS_AS_TAGS",
+      "value": "${replace(jsonencode(var.tags), "\"", "\\\"")}"
+    }
+  ],
+  "secrets": [
+    {
+      "name": "DD_API_KEY",
+      "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
+    }
+  ],
+  ${module.firelens_log_config.log_configuration}
+}
+EOF
 }
 
 resource "random_integer" "target_group_id" {
@@ -368,11 +470,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
 
   container_definitions = <<DEFINITION
    [
-     ${module.firelens_log_config.fire_lens_container},
-     {
-      ${module.firelens_log_config.datadog_container},
-      ${module.firelens_log_config.log_configuration}
-     },
+     ${local.fire_lens_container},
      {
        "portMappings": [
          {
@@ -391,10 +489,36 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        "essential": true,
        "privileged": false,
        "name": "${local.device_app_name}",
-       "environment": "${local.ecs_shared_env_vars}"
-     }
+       "environment": [
+         ${local.ecs_shared_env_vars}
+       ],
+       "volumesFrom": [],
+       "mountPoints": [],
+       "logConfiguration": {
+         "logDriver": "awsfirelens",
+         "options": {
+            "Name": "datadog",
+            "compress": "gzip",
+            "Host": "http-intake.logs.datadoghq.com",
+            "dd_service": "${local.device_app_name}",
+            "dd_source": "elixir",
+            "dd_message_key": "log",
+            "dd_tags": "env:${var.environment_name},application:${local.device_app_name}-${var.environment_name},version:${var.docker_image}",
+            "TLS": "on",
+            "provider": "ecs"
+          },
+          "secretOptions": [
+            {
+              "name": "apikey",
+              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
+            }
+          ]
+       }
+     },
+     ${local.datadog_ecs_agent_task_def}
    ]
 DEFINITION
+
 
 depends_on = [
     module.firelens_log_config
