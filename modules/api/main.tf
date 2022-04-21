@@ -12,9 +12,9 @@ locals {
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
     { "name" : "APP_NAME", "value" : "${local.app_name}" },
-    { "name" : "HOST", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_host}" },
-    { "name" : "CLUSTER", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_cluster}" },
-    { "name" : "S3_BUCKET_NAME", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_s3_bucket_name.name}" },
+    { "name" : "HOST", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_host.value}" },
+    { "name" : "CLUSTER", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_cluster.value}" },
+    { "name" : "S3_BUCKET_NAME", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_s3_bucket_name.value}" },
 EOF
 
   fire_lens_container = <<EOF
