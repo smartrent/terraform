@@ -507,7 +507,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
        "image": "${var.docker_image}",
        "essential": true,
        "privileged": false,
-       "name": "${local.app_name}",
+       "name": "nerves_hub_api",
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
@@ -537,6 +537,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
      ${local.datadog_ecs_agent_task_def}
    ]
 DEFINITION
+
 depends_on = [
     module.firelens_log_config
   ]
