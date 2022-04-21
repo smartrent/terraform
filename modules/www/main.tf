@@ -104,7 +104,7 @@ EOF
   "secrets": [
     {
       "name": "DD_API_KEY",
-      "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+      "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
     }
   ],
   ${module.firelens_log_config.log_configuration}
