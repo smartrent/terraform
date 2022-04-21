@@ -10,7 +10,7 @@ locals {
   ssm_prefix = "nerves_hub_api"
 
   ecs_shared_env_vars = <<EOF
-    { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
+    { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
     { "name" : "APP_NAME", "value" : "${local.app_name}" }
 EOF
 
