@@ -111,8 +111,7 @@ EOF
       "name": "DD_API_KEY",
       "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
     }
-  ],
-  ${module.firelens_log_config.log_configuration}
+  ]
 }
 EOF
 
