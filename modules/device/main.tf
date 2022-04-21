@@ -7,8 +7,8 @@ locals {
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
     { "name" : "APP_NAME", "value" : "${local.device_app_name}" },
-    { "name" : "HOST", "value" : "${aws_ssm_parameter.nerves_hub_device_ssm_host}" },
-    { "name" : "CLUSTER", "value" : "${aws_ssm_parameter.nerves_hub_device_ssm_cluster}" }
+    { "name" : "HOST", "value" : "${aws_ssm_parameter.nerves_hub_device_ssm_host.value}" },
+    { "name" : "CLUSTER", "value" : "${aws_ssm_parameter.nerves_hub_device_ssm_cluster.value}" }
 
 EOF
 
