@@ -14,7 +14,7 @@ locals {
     { "name" : "APP_NAME", "value" : "${local.app_name}" },
     { "name" : "HOST", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_host.value}" },
     { "name" : "CLUSTER", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_cluster.value}" },
-    { "name" : "S3_BUCKET_NAME", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_s3_bucket_name.value}" },
+    { "name" : "S3_BUCKET_NAME", "value" : "${aws_ssm_parameter.nerves_hub_api_ssm_s3_bucket_name.value}" }
 EOF
 
   fire_lens_container = <<EOF
@@ -507,7 +507,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
        "image": "${var.docker_image}",
        "essential": true,
        "privileged": false,
-       "name": "nerves_hub_api",
+       "name": "${local.app_name}",
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
