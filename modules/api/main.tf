@@ -534,7 +534,6 @@ resource "aws_ecs_task_definition" "api_task_definition" {
      ${local.datadog_ecs_agent_task_def}
    ]
 DEFINITION
-
 depends_on = [
     module.firelens_log_config
   ]
