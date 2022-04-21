@@ -110,9 +110,9 @@ EOF
 EOF
 
   log_configuration = <<EOF
-"mountPoints": [],
-"volumesFrom": [],
-"logConfiguration": {
+    "mountPoints": [],
+    "volumesFrom": [],
+    "logConfiguration": {
       "logDriver": "awsfirelens",
       "options": {
         "Name": "datadog",
