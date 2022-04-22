@@ -413,6 +413,7 @@ data "aws_iam_policy_document" "device_iam_policy" {
 
     resources = [
       var.kms_key.arn,
+      module.firelens_log_config.for_ssm_params
     ]
   }
 
