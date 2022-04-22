@@ -36,7 +36,7 @@ EOF
 {
   "name": "datadog-agent",
   "image": "${var.datadog_image}",
-  "essential": false,
+  "essential": true,
   "memoryReservation": 256,
   "cpu": 10,
   "mountPoints": [],
