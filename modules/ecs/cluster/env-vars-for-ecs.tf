@@ -19,7 +19,7 @@ locals {
         }
 EOF
 
-  ecs_daw_shared_ssm_secrets = <<EOF
+  ecs_device_api_www_shared_ssm_secrets = <<EOF
         {
           "name": "CLUSTER_NAME",
           "valueFrom": "${aws_ssm_parameter.cluster_name.arn}"
