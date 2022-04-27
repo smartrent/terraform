@@ -103,7 +103,7 @@ datadog_ecs_agent_task_def = <<EOF
   "secrets": [
     {
       "name": "DD_API_KEY",
-      "valueFrom": "${var.datadog_key_arn}"
+      "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
     }
   ],
   ${local.log_configuration}
