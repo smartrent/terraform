@@ -2,6 +2,117 @@
 
 locals {
   device_app_name = "nerves_hub_device"
+  ssm_prefix = "nerves_hub_device"
+
+  ecs_shared_env_vars = <<EOF
+    { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
+    { "name" : "APP_NAME", "value" : "${local.device_app_name}" },
+    { "name" : "HOST", "value" : "${var.host_name}" },
+    { "name" : "CLUSTER", "value" : "${var.cluster.name}" }
+EOF
+
+  fire_lens_container = <<EOF
+  {
+    "essential": true,
+    "image": "906394416424.dkr.ecr.${var.region}.amazonaws.com/aws-for-fluent-bit:stable",
+    "name": "log_router",
+    "cpu": 0,
+    "user": "0",
+    "environment": [],
+    "volumesFrom": [],
+    "portMappings": [],
+    "mountPoints": [],
+    "firelensConfiguration": {
+      "type": "fluentbit",
+      "options": {
+        "enable-ecs-log-metadata": "true"
+      }
+    },
+    "memoryReservation": 50
+  }
+EOF
+
+ datadog_ecs_agent_task_def = <<EOF
+{
+  "name": "datadog-agent",
+  "image": "${var.datadog_image}",
+  "essential": false,
+  "memoryReservation": 256,
+  "cpu": 10,
+  "mountPoints": [],
+  "volumesFrom": [],
+  "portMappings": [
+    {
+      "containerPort": 8125,
+      "hostPort": 8125,
+      "protocol": "udp"
+    },
+    {
+      "containerPort": 8126,
+      "hostPort": 8126,
+      "protocol": "tcp"
+    }
+  ],
+  "environment": [
+    {
+      "name": "ECS_FARGATE",
+      "value": "true"
+    },
+    {
+      "name": "DD_LOG_LEVEL",
+      "value": "warn"
+    },
+    {
+      "name": "DD_APM_ENABLED",
+      "value": "true"
+    },
+    {
+      "name": "DD_APM_NON_LOCAL_TRAFFIC",
+      "value": "true"
+    },
+    {
+      "name": "DD_SYSTEM_PROBE_ENABLED",
+      "value": "true"
+    },
+    {
+      "name": "DD_PROCESS_AGENT_ENABLED",
+      "value": "true"
+    },
+    {
+      "name": "DD_HEALTH_PORT",
+      "value": "5555"
+    },
+    {
+      "name": "DD_APM_RECEIVER_PORT",
+      "value": "8126"
+    },
+    {
+      "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+      "value": "true"
+    },
+    {
+      "name": "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL",
+      "value": "true"
+    },
+    {
+      "name": "DD_DOGSTATSD_PORT",
+      "value": "8125"
+    },
+    {
+      "name": "DD_DOCKER_LABELS_AS_TAGS",
+      "value": "${replace(jsonencode(var.tags), "\"", "\\\"")}"
+    }
+  ],
+  "secrets": [
+    {
+      "name": "DD_API_KEY",
+      "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
+    }
+  ],
+  ${module.firelens_log_config.log_configuration}
+}
+EOF
+
 }
 
 resource "random_integer" "target_group_id" {
@@ -302,6 +413,7 @@ data "aws_iam_policy_document" "device_iam_policy" {
 
     resources = [
       var.kms_key.arn,
+      module.firelens_log_config.for_ssm_params.arn
     ]
   }
 
@@ -362,6 +474,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
 
   container_definitions = <<DEFINITION
    [
+     ${local.fire_lens_container},
      {
        "portMappings": [
          {
@@ -381,29 +494,53 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        "privileged": false,
        "name": "${local.device_app_name}",
        "environment": [
-         {
-           "name": "ENVIRONMENT",
-           "value": "${terraform.workspace}"
-         },
-         {
-           "name": "APP_NAME",
-           "value": "${local.device_app_name}"
-         }
+         ${local.ecs_shared_env_vars}
        ],
+       "volumesFrom": [],
+       "mountPoints": [],
        "logConfiguration": {
-         "logDriver": "awslogs",
+         "logDriver": "awsfirelens",
          "options": {
-           "awslogs-region": "${var.region}",
-           "awslogs-group": "${var.log_group}",
-           "awslogs-stream-prefix": "${local.device_app_name}"
-         }
+            "Name": "datadog",
+            "compress": "gzip",
+            "Host": "http-intake.logs.datadoghq.com",
+            "dd_service": "${local.device_app_name}",
+            "dd_source": "elixir",
+            "dd_message_key": "log",
+            "dd_tags": "env:${var.environment_name},application:${local.device_app_name}-${var.environment_name},version:${var.docker_image}",
+            "TLS": "on",
+            "provider": "ecs"
+          },
+          "secretOptions": [
+            {
+              "name": "apikey",
+              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
+            }
+          ]
        }
-     }
+     },
+     ${local.datadog_ecs_agent_task_def}
    ]
-
 DEFINITION
 
+
+depends_on = [
+    module.firelens_log_config
+  ]
+
   tags = var.tags
+}
+
+module "firelens_log_config" {
+  source              = "../firelens_log_config"
+  app_name            = local.device_app_name
+  environment_name    = var.environment_name
+  task_name           = local.device_app_name
+  datadog_image       = var.datadog_image
+  region              = var.region
+  ssm_prefix          = local.ssm_prefix
+
+  tags                = var.tags
 }
 
 resource "aws_ecs_service" "device_ecs_service" {
