@@ -69,11 +69,7 @@ EOF
   fire_lens_container = <<EOF
   {
     "essential": true,
-<<<<<<< HEAD
     "image": "906394416424.dkr.ecr.${var.region}.amazonaws.com/aws-for-fluent-bit:stable",
-=======
-    "image": "906394416424.dkr.ecr.${var.aws_region}.amazonaws.com/aws-for-fluent-bit:stable",
->>>>>>> 5c4abef (Update modules/ecs/cluster/env-vars-for-ecs.tf)
     "name": "log_router",
     "cpu": 0,
     "user": "0",
