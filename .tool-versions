@@ -1,6 +1,2 @@
-<<<<<<< HEAD
 terraform 0.12.29
 tflint 0.16.2
-=======
-terraform 0.12.29
->>>>>>> cc126ef (remove tflint)
