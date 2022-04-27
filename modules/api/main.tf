@@ -212,7 +212,7 @@ resource "aws_ssm_parameter" "nerves_hub_api_ssm_app_name" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "cluster_name" {
+resource "aws_ssm_parameter" "nerves_hub_api_ssm_cluster" {
   name      = "/${local.app_name}/${terraform.workspace}/CLUSTER"
   type      = "String"
   value     = var.cluster.name
