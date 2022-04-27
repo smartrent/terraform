@@ -40,16 +40,7 @@ variable "tags" {
   }
 }
 
-variable "datadog_image" {
-  description = "Datadog container image"
-  type = string
-}
-
 variable "app_name" {
-  type = string
-}
-
-variable "ssm_prefix" {
   type = string
 }
 
