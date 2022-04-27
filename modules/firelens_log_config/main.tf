@@ -103,7 +103,7 @@ datadog_ecs_agent_task_def = <<EOF
   "secrets": [
     {
       "name": "DD_API_KEY",
-      "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
+      "valueFrom": "${var.datadog_key_arn}"
     }
   ],
   ${local.log_configuration}
