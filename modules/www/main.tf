@@ -400,7 +400,7 @@ resource "aws_ecs_task_definition" "www_task_definition" {
   memory                   = "512"
   tags                     = var.tags
 
-  container_definitions = <<DEFINITION
+container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
      {
@@ -423,29 +423,7 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        "name": "nerves_hub_www",
        "environment": [
          ${local.ecs_shared_env_vars}
-       ],
-       "volumesFrom": [],
-       "mountPoints": [],
-       "logConfiguration": {
-         "logDriver": "awsfirelens",
-         "options": {
-            "Name": "datadog",
-            "compress": "gzip",
-            "Host": "http-intake.logs.datadoghq.com",
-            "dd_service": "${local.app_name}",
-            "dd_source": "elixir",
-            "dd_message_key": "log",
-            "dd_tags": "env:${var.environment_name},application:${local.app_name}-${var.environment_name},version:${var.docker_image}",
-            "TLS": "on",
-            "provider": "ecs"
-          },
-          "secretOptions": [
-            {
-              "name": "apikey",
-              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
-            }
-          ]
-       }
+       ]
      },
      ${module.firelens_log_config.datadog_container}
    ]
