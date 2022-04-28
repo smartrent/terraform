@@ -3,11 +3,6 @@
 locals {
   tld = var.region == "eu-central-1" ? "eu" : "com"
 
-  ecs_shared_env_vars = <<EOF
-        { "name" : "ENVIRONMENT", "value" : "${var.environment_name}" },
-        { "name" : "APP_NAME", "value" : "${var.app_name}" }
-EOF
-
   fire_lens_container = <<EOF
   {
     "essential": true,
@@ -25,7 +20,12 @@ EOF
         "enable-ecs-log-metadata": "true"
       }
     },
-    "memoryReservation": 50
+    "memoryReservation": 50,
+    "dockerLabels": {
+      "com.datadoghq.tags.env": "${var.environment_name}",
+      "com.datadoghq.tags.service": "${var.app_name}",
+      "com.datadoghq.tags.version": "${var.datadog_image}"
+    }
   }
 EOF
 
@@ -54,6 +54,10 @@ datadog_ecs_agent_task_def = <<EOF
     {
       "name": "ECS_FARGATE",
       "value": "true"
+    },
+    {
+      "name": "DD_DOGSTATSD_TAG_CARDINALITY",
+      "value": "orchestrator"
     },
     {
       "name": "DD_LOG_LEVEL",
@@ -94,6 +98,18 @@ datadog_ecs_agent_task_def = <<EOF
     {
       "name": "DD_DOGSTATSD_PORT",
       "value": "8125"
+    },
+    {
+      "name": "DD_ENV",
+      "value": "${var.environment_name}"
+    },
+    {
+      "name": "DD_SERVICE",
+      "value": "${var.app_name}"
+    },
+    {
+      "name": "DD_VERSION",
+      "value": "${var.datadog_image}"
     },
     {
       "name": "DD_DOCKER_LABELS_AS_TAGS",
