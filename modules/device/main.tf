@@ -9,6 +9,7 @@ locals {
     { "name" : "APP_NAME", "value" : "${local.device_app_name}" },
     { "name" : "HOST", "value" : "${var.host_name}" },
     { "name" : "CLUSTER", "value" : "${var.cluster.name}" }
+
 EOF
 
 }
@@ -393,34 +394,11 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        "name": "${local.device_app_name}",
        "environment": [
          ${local.ecs_shared_env_vars}
-       ],
-       "volumesFrom": [],
-       "mountPoints": [],
-       "logConfiguration": {
-         "logDriver": "awsfirelens",
-         "options": {
-            "Name": "datadog",
-            "compress": "gzip",
-            "Host": "http-intake.logs.datadoghq.com",
-            "dd_service": "${local.device_app_name}",
-            "dd_source": "elixir",
-            "dd_message_key": "log",
-            "dd_tags": "env:${var.environment_name},application:${local.device_app_name}-${var.environment_name},version:${var.docker_image}",
-            "TLS": "on",
-            "provider": "ecs"
-          },
-          "secretOptions": [
-            {
-              "name": "apikey",
-              "valueFrom": "${module.firelens_log_config.datadog_key_arn}"
-            }
-          ]
-       }
+       ]
      },
      ${module.firelens_log_config.datadog_container}
    ]
 DEFINITION
-
 
 
 depends_on = [
