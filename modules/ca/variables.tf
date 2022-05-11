@@ -36,3 +36,17 @@ variable "s3_prefix" {
   description = "S3 bucket name prefix"
   default     = ""
 }
+
+variable "environment_name" {
+  type = string
+}
+
+variable "datadog_image" {
+  description = "Datadog container image"
+  type = string
+}
+
+variable "datadog_image_tag" {
+  description = "Datadog container image tag"
+  type = string
+}

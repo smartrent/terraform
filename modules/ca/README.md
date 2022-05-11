@@ -14,7 +14,9 @@ No requirements.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_firelens_log_config"></a> [firelens\_log\_config](#module\_firelens\_log\_config) | ../firelens_log_config | n/a |
 
 ## Resources
 
@@ -47,8 +49,11 @@ No modules.
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | n/a | `any` | n/a | yes |
 | <a name="input_bucket_prefix"></a> [bucket\_prefix](#input\_bucket\_prefix) | n/a | `any` | n/a | yes |
 | <a name="input_cluster"></a> [cluster](#input\_cluster) | n/a | `any` | n/a | yes |
+| <a name="input_datadog_image"></a> [datadog\_image](#input\_datadog\_image) | Datadog container image | `string` | n/a | yes |
+| <a name="input_datadog_image_tag"></a> [datadog\_image\_tag](#input\_datadog\_image\_tag) | Datadog container image tag | `string` | n/a | yes |
 | <a name="input_db"></a> [db](#input\_db) | n/a | `any` | n/a | yes |
 | <a name="input_docker_image"></a> [docker\_image](#input\_docker\_image) | n/a | `any` | n/a | yes |
+| <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | n/a | `string` | n/a | yes |
 | <a name="input_erl_cookie"></a> [erl\_cookie](#input\_erl\_cookie) | n/a | `any` | n/a | yes |
 | <a name="input_host_name"></a> [host\_name](#input\_host\_name) | n/a | `any` | n/a | yes |
 | <a name="input_kms_key"></a> [kms\_key](#input\_kms\_key) | n/a | `any` | n/a | yes |

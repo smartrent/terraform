@@ -41,15 +41,19 @@ variable "certificate_arn" {
 variable "from_email" {
   default = "no-reply@nerves-hub.org"
 }
+
 variable "access_logs" {
   default = false
 }
+
 variable "access_logs_bucket" {
   default = ""
 }
+
 variable "access_logs_prefix" {
   default = "nerves-hub-api-nlb"
 }
+
 variable "internal_lb" {
   description = "Whether or not the load balancer is internal"
   default     = false
@@ -64,4 +68,18 @@ variable "tags" {
   default = {
     terraform = true
   }
+}
+
+variable "environment_name" {
+  type = string
+}
+
+variable "datadog_image" {
+  description = "Datadog container image"
+  type = string
+}
+
+variable "datadog_image_tag" {
+  description = "Datadog container image tag"
+  type = string
 }

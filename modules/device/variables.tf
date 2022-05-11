@@ -18,22 +18,41 @@ variable "smtp_username" {}
 variable "smtp_password" {}
 variable "service_count" {}
 variable "task_execution_role" {}
+
 variable "from_email" {
   default = "no-reply@nerves-hub.org"
 }
+
 variable "access_logs" {
   default = false
 }
+
 variable "access_logs_bucket" {
   default = ""
 }
+
 variable "access_logs_prefix" {
   default = "nerves-hub-device-nlb"
 }
+
 variable "tags" {
   description = "A mapping of tags to assign to the resources"
   type        = map(string)
   default = {
     terraform = true
   }
+}
+
+variable "environment_name" {
+  type = string
+}
+
+variable "datadog_image" {
+  description = "Datadog container image"
+  type = string
+}
+
+variable "datadog_image_tag" {
+  description = "Datadog container image tag"
+  type = string
 }

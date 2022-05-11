@@ -7,6 +7,16 @@ locals {
     aws_ecs_service.api_ecs_service[0].cluster,
     "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-api:*",
   ]
+  ssm_prefix = "nerves_hub_api"
+
+  ecs_shared_env_vars = <<EOF
+    { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
+    { "name" : "APP_NAME", "value" : "${local.app_name}" },
+    { "name" : "HOST", "value" : "${var.host_name}" },
+    { "name" : "CLUSTER", "value" : "${var.cluster.name}" },
+    { "name" : "S3_BUCKET_NAME", "value" : "${var.app_bucket}" }
+EOF
+
 }
 
 resource "random_integer" "target_group_id" {
@@ -377,6 +387,8 @@ resource "aws_ecs_task_definition" "api_task_definition" {
 
   container_definitions = <<DEFINITION
    [
+     ${module.firelens_log_config.fire_lens_container},
+     ${module.firelens_log_config.datadog_container},
      {
        "portMappings": [
          {
@@ -396,28 +408,31 @@ resource "aws_ecs_task_definition" "api_task_definition" {
        "privileged": false,
        "name": "${local.app_name}",
        "environment": [
-         {
-           "name": "ENVIRONMENT",
-           "value": "${terraform.workspace}"
-         },
-         {
-           "name": "APP_NAME",
-           "value": "${local.app_name}"
-         }
+         ${local.ecs_shared_env_vars}
        ],
-       "logConfiguration": {
-         "logDriver": "awslogs",
-         "options": {
-           "awslogs-region": "${var.region}",
-           "awslogs-group": "${var.log_group}",
-           "awslogs-stream-prefix": "${local.app_name}"
-         }
-       }
+     ${module.firelens_log_config.log_configuration}
      }
    ]
-
 DEFINITION
 
+depends_on = [
+    module.firelens_log_config
+  ]
+
+}
+
+module "firelens_log_config" {
+  source              = "../firelens_log_config"
+  app_name            = local.app_name
+  environment_name    = var.environment_name
+  task_name           = local.app_name
+  datadog_image       = var.datadog_image
+  datadog_image_tag   = var.datadog_image_tag
+  region              = var.region
+  ssm_prefix          = local.ssm_prefix
+  kms_key_id      = var.kms_key.arn
+
+  tags                = var.tags
 }
 
 resource "aws_ecs_service" "api_ecs_service" {

@@ -1,5 +1,18 @@
 # nerves_hub_www
 
+locals {
+  app_name = "nerves_hub_www"
+  ssm_prefix = "nerves_hub_www"
+
+  ecs_shared_env_vars = <<EOF
+    { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
+    { "name" : "APP_NAME", "value" : "${local.app_name}" },
+    { "name" : "HOST", "value" : "${var.host_name}" },
+    { "name" : "CLUSTER", "value" : "${var.cluster.name}" }
+EOF
+
+}
+
 resource "random_integer" "target_group_id" {
   min = 1
   max = 999
@@ -386,8 +399,10 @@ resource "aws_ecs_task_definition" "www_task_definition" {
   memory                   = "512"
   tags                     = var.tags
 
-  container_definitions = <<DEFINITION
+container_definitions = <<DEFINITION
    [
+     ${module.firelens_log_config.fire_lens_container},
+     ${module.firelens_log_config.datadog_container},
      {
        "portMappings": [
          {
@@ -407,27 +422,16 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        "privileged": false,
        "name": "nerves_hub_www",
        "environment": [
-         {
-           "name": "ENVIRONMENT",
-           "value": "${terraform.workspace}"
-         },
-         {
-           "name": "APP_NAME",
-           "value": "nerves_hub_www"
-         }
+         ${local.ecs_shared_env_vars}
        ],
-       "logConfiguration": {
-         "logDriver": "awslogs",
-         "options": {
-           "awslogs-region": "${var.region}",
-           "awslogs-group": "${var.cluster.log_group_name}",
-           "awslogs-stream-prefix": "nerves_hub_www"
-         }
-       }
+       ${module.firelens_log_config.log_configuration}
      }
    ]
-
 DEFINITION
+
+depends_on = [
+    module.firelens_log_config
+  ]
 
 }
 
@@ -471,4 +475,18 @@ resource "aws_ecs_service" "www_ecs_service" {
     aws_iam_role.www_task_role,
     aws_lb_listener.www_lb_listener
   ]
+}
+
+module "firelens_log_config" {
+  source              = "../firelens_log_config"
+  app_name            = local.app_name
+  environment_name    = var.environment_name
+  task_name           = local.app_name
+  datadog_image       = var.datadog_image
+  datadog_image_tag   = var.datadog_image_tag
+  region              = var.region
+  ssm_prefix          = local.ssm_prefix
+  kms_key_id      = var.kms_key.arn
+
+  tags                = var.tags
 }
