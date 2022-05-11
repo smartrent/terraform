@@ -1,13 +1,9 @@
-variable "aws_region" {
+variable "region" {
   description = "The AWS region to create things in."
 }
 
 variable "aws_vpc_id" {
   description = "VPC id"
-}
-
-variable "environment" {
-  description = "Deploy environment"
 }
 
 variable "aws_private_subnet_ids" {
@@ -42,4 +38,12 @@ variable "tags" {
   default = {
     terraform = true
   }
+}
+
+variable "app_name" {
+  type = string
+}
+
+variable "environment_name" {
+  type = string
 }

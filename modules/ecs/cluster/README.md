@@ -32,13 +32,14 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_allow_list_ipv4"></a> [allow\_list\_ipv4](#input\_allow\_list\_ipv4) | IPv4s that are allowed to access the cluster from load balancers | `any` | n/a | yes |
 | <a name="input_allow_list_ipv6"></a> [allow\_list\_ipv6](#input\_allow\_list\_ipv6) | IPv6s that are allowed to access the cluster from load balancers | `list` | `[]` | no |
+| <a name="input_app_name"></a> [app\_name](#input\_app\_name) | n/a | `string` | n/a | yes |
 | <a name="input_aws_private_subnet_ids"></a> [aws\_private\_subnet\_ids](#input\_aws\_private\_subnet\_ids) | Subnet ids | `any` | n/a | yes |
 | <a name="input_aws_public_subnet_ids"></a> [aws\_public\_subnet\_ids](#input\_aws\_public\_subnet\_ids) | Subnet ids | `any` | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to create things in. | `any` | n/a | yes |
 | <a name="input_aws_vpc_id"></a> [aws\_vpc\_id](#input\_aws\_vpc\_id) | VPC id | `any` | n/a | yes |
 | <a name="input_container_insights"></a> [container\_insights](#input\_container\_insights) | ECS cluster container insights enabled or disabled | `bool` | `true` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | Deploy environment | `any` | n/a | yes |
+| <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | n/a | `string` | n/a | yes |
 | <a name="input_log_retention"></a> [log\_retention](#input\_log\_retention) | Cloud watch log retention days | `any` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The AWS region to create things in. | `any` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources | `map(string)` | <pre>{<br>  "terraform": true<br>}</pre> | no |
 
 ## Outputs

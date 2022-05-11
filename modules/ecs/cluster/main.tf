@@ -1,11 +1,12 @@
 locals {
-  current_account_id = data.aws_caller_identity.current.account_id
+  current_account_id     = data.aws_caller_identity.current.account_id
+  bash_friendly_app_name = replace(var.app_name, "-", "_")
 }
 
 data "aws_caller_identity" "current" {}
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "nerves-hub-${var.environment}"
+  name = "nerves-hub-${var.environment_name}"
 
   setting {
     name  = "containerInsights"
