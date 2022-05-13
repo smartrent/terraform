@@ -26,7 +26,7 @@ No resources.
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | n/a | `string` | n/a | yes |
 | <a name="input_datadog_image"></a> [datadog\_image](#input\_datadog\_image) | n/a | `string` | n/a | yes |
 | <a name="input_datadog_image_tag"></a> [datadog\_image\_tag](#input\_datadog\_image\_tag) | Datadog container image tag | `string` | n/a | yes |
-| <a name="input_datadog_key"></a> [datadog\_key](#input\_datadog\_key) | Datadog Key | `string` | n/a | yes |
+| <a name="input_datadog_key_arn"></a> [datadog\_key\_arn](#input\_datadog\_key\_arn) | Datadog Key ARN | `string` | n/a | yes |
 | <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | n/a | `string` | n/a | yes |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | KMS Key to access SSM Parameters | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |

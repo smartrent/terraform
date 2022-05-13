@@ -41,7 +41,7 @@ variable "kms_key_id" {
   type = string
 }
 
-variable "datadog_key" {
-  description = "Datadog Key"
+variable "datadog_key_arn" {
+  description = "Datadog Key ARN"
   type = string
 }
