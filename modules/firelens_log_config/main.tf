@@ -123,7 +123,7 @@ datadog_ecs_agent_task_def = <<EOF
   "secrets": [
     {
       "name": "DD_API_KEY",
-      "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+      "valueFrom": "${var.datadog_key.arn}"
     }
   ],
   "dockerLabels": {
@@ -152,7 +152,7 @@ EOF
         "secretOptions": [
         {
           "name": "apikey",
-          "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+          "valueFrom": "${var.datadog_key.arn}"
         }
       ]
     },
@@ -180,7 +180,7 @@ EOF
         "secretOptions": [
         {
           "name": "apikey",
-          "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+          "valueFrom": "${var.datadog_key.arn}"
         }
       ]
     },

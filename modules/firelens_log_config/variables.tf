@@ -40,3 +40,8 @@ variable "kms_key_id" {
   description = "KMS Key to access SSM Parameters"
   type = string
 }
+
+variable "datadog_key" {
+  description = "Datadog Key"
+  type = string
+}
