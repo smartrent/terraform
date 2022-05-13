@@ -50,3 +50,8 @@ variable "datadog_image_tag" {
   description = "Datadog container image tag"
   type = string
 }
+
+variable "datadog_key" {
+  description = "Datadog Key"
+  type = string
+}
