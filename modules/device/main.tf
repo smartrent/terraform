@@ -414,7 +414,7 @@ module "firelens_log_config" {
   task_name           = local.device_app_name
   datadog_image       = var.datadog_image
   datadog_image_tag   = var.datadog_image_tag
-  datadog_key         = var.datadog_key
+  datadog_key_arn     = var.datadog_key.arn
   region              = var.region
   ssm_prefix          = local.ssm_prefix
   kms_key_id      = var.kms_key.arn
