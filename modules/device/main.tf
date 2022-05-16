@@ -2,7 +2,6 @@
 
 locals {
   device_app_name = "nerves_hub_device"
-  ssm_prefix      = "nerves_hub_device"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
@@ -417,7 +416,6 @@ module "firelens_log_config" {
   datadog_image_tag = var.datadog_image_tag
   datadog_key_arn   = var.datadog_key_arn
   region            = var.region
-  ssm_prefix        = local.ssm_prefix
 
   tags = var.tags
 }

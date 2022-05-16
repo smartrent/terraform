@@ -7,7 +7,6 @@ locals {
     aws_ecs_service.api_ecs_service[0].cluster,
     "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-api:*",
   ]
-  ssm_prefix = "nerves_hub_api"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
@@ -431,7 +430,6 @@ module "firelens_log_config" {
   datadog_image_tag = var.datadog_image_tag
   datadog_key_arn   = var.datadog_key_arn
   region            = var.region
-  ssm_prefix        = local.ssm_prefix
 
   tags = var.tags
 }

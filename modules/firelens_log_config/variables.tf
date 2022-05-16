@@ -19,10 +19,6 @@ variable "region" {
   description = "The AWS Region"
 }
 
-variable "ssm_prefix" {
-  type = string
-}
-
 variable "tags" {
   description = "A mapping of tags to assign to the resources"
   type        = map(string)
