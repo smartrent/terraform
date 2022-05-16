@@ -264,7 +264,7 @@ data "aws_iam_policy_document" "api_iam_policy" {
 
     resources = [
       "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${local.app_name}/${terraform.workspace}*",
-      var.datadog_key.arn
+      var.datadog_key_arn
     ]
   }
 

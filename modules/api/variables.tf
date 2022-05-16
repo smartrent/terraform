@@ -84,7 +84,7 @@ variable "datadog_image_tag" {
   type        = string
 }
 
-variable "datadog_key" {
+variable "datadog_key_arn" {
   description = "Datadog Key"
   type        = string
 }
