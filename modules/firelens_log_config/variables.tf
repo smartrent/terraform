@@ -36,11 +36,6 @@ variable "datadog_image_tag" {
   type        = string
 }
 
-variable "kms_key_id" {
-  description = "KMS Key to access SSM Parameters"
-  type        = string
-}
-
 variable "datadog_key_arn" {
   description = "Datadog Key ARN"
   type        = string

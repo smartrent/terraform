@@ -488,7 +488,6 @@ module "firelens_log_config" {
   datadog_key_arn   = var.datadog_key.arn
   region            = var.region
   ssm_prefix        = local.ssm_prefix
-  kms_key_id        = var.kms_key.arn
 
   tags = var.tags
 }
