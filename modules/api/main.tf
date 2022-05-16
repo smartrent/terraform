@@ -429,7 +429,7 @@ module "firelens_log_config" {
   task_name         = local.app_name
   datadog_image     = var.datadog_image
   datadog_image_tag = var.datadog_image_tag
-  datadog_key_arn   = var.datadog_key.arn
+  datadog_key_arn   = var.datadog_key
   region            = var.region
   ssm_prefix        = local.ssm_prefix
 
