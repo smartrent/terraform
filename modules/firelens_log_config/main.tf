@@ -180,7 +180,7 @@ EOF
         "secretOptions": [
         {
           "name": "apikey",
-          "valueFrom": "${var.datadog_key_arn.arn}"
+          "valueFrom": "${var.datadog_key_arn}"
         }
       ]
     },
