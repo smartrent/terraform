@@ -33,15 +33,15 @@ variable "tags" {
 
 variable "datadog_image_tag" {
   description = "Datadog container image tag"
-  type = string
+  type        = string
 }
 
 variable "kms_key_id" {
   description = "KMS Key to access SSM Parameters"
-  type = string
+  type        = string
 }
 
 variable "datadog_key_arn" {
   description = "Datadog Key ARN"
-  type = string
+  type        = string
 }

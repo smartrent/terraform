@@ -11,5 +11,5 @@ output "datadog_container" {
 }
 
 output "datadog_key_arn" {
-    value = var.datadog_key_arn
+  value = var.datadog_key_arn
 }

@@ -1,7 +1,7 @@
 # nerves_hub_www
 
 locals {
-  app_name = "nerves_hub_www"
+  app_name   = "nerves_hub_www"
   ssm_prefix = "nerves_hub_www"
 
   ecs_shared_env_vars = <<EOF
@@ -399,7 +399,7 @@ resource "aws_ecs_task_definition" "www_task_definition" {
   memory                   = "512"
   tags                     = var.tags
 
-container_definitions = <<DEFINITION
+  container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
      ${module.firelens_log_config.datadog_container},
@@ -429,7 +429,7 @@ container_definitions = <<DEFINITION
    ]
 DEFINITION
 
-depends_on = [
+  depends_on = [
     module.firelens_log_config
   ]
 
@@ -478,16 +478,16 @@ resource "aws_ecs_service" "www_ecs_service" {
 }
 
 module "firelens_log_config" {
-  source              = "../firelens_log_config"
-  app_name            = local.app_name
-  environment_name    = var.environment_name
-  task_name           = local.app_name
-  datadog_image       = var.datadog_image
-  datadog_image_tag   = var.datadog_image_tag
-  datadog_key_arn     = var.datadog_key.arn
-  region              = var.region
-  ssm_prefix          = local.ssm_prefix
-  kms_key_id      = var.kms_key.arn
+  source            = "../firelens_log_config"
+  app_name          = local.app_name
+  environment_name  = var.environment_name
+  task_name         = local.app_name
+  datadog_image     = var.datadog_image
+  datadog_image_tag = var.datadog_image_tag
+  datadog_key_arn   = var.datadog_key.arn
+  region            = var.region
+  ssm_prefix        = local.ssm_prefix
+  kms_key_id        = var.kms_key.arn
 
-  tags                = var.tags
+  tags = var.tags
 }

@@ -2,7 +2,7 @@
 
 locals {
   device_app_name = "nerves_hub_device"
-  ssm_prefix = "nerves_hub_device"
+  ssm_prefix      = "nerves_hub_device"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
@@ -400,7 +400,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
 DEFINITION
 
 
-depends_on = [
+  depends_on = [
     module.firelens_log_config
   ]
 
@@ -408,18 +408,18 @@ depends_on = [
 }
 
 module "firelens_log_config" {
-  source              = "../firelens_log_config"
-  app_name            = local.device_app_name
-  environment_name    = var.environment_name
-  task_name           = local.device_app_name
-  datadog_image       = var.datadog_image
-  datadog_image_tag   = var.datadog_image_tag
-  datadog_key_arn     = var.datadog_key.arn
-  region              = var.region
-  ssm_prefix          = local.ssm_prefix
-  kms_key_id      = var.kms_key.arn
+  source            = "../firelens_log_config"
+  app_name          = local.device_app_name
+  environment_name  = var.environment_name
+  task_name         = local.device_app_name
+  datadog_image     = var.datadog_image
+  datadog_image_tag = var.datadog_image_tag
+  datadog_key_arn   = var.datadog_key.arn
+  region            = var.region
+  ssm_prefix        = local.ssm_prefix
+  kms_key_id        = var.kms_key.arn
 
-  tags                = var.tags
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "device_ecs_service" {

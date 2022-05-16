@@ -60,15 +60,15 @@ variable "environment_name" {
 
 variable "datadog_image" {
   description = "Datadog container image"
-  type = string
+  type        = string
 }
 
 variable "datadog_image_tag" {
   description = "Datadog container image tag"
-  type = string
+  type        = string
 }
 
 variable "datadog_key" {
   description = "Datadog Key"
-  type = string
+  type        = string
 }

@@ -29,7 +29,7 @@ locals {
   }
 EOF
 
-datadog_ecs_agent_task_def = <<EOF
+  datadog_ecs_agent_task_def = <<EOF
 {
   "name": "datadog-agent",
   "image": "${var.datadog_image}",
