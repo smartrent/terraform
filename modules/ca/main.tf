@@ -211,6 +211,7 @@ data "aws_iam_policy_document" "ca_iam_policy" {
 
     resources = [
       "arn:aws:ssm:${var.region}:${var.account_id}:parameter/nerves_hub_ca/${terraform.workspace}*",
+      var.datadog_key.arn
     ]
   }
 
