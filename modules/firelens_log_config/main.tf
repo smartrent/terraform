@@ -72,10 +72,6 @@ EOF
       "value": "true"
     },
     {
-      "name": "DD_SYSTEM_PROBE_ENABLED",
-      "value": "true"
-    },
-    {
       "name": "DD_PROCESS_AGENT_ENABLED",
       "value": "true"
     },
