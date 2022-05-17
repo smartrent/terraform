@@ -388,29 +388,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
   container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
-     {
-       "portMappings": [
-         {
-           "hostPort": 443,
-           "protocol": "tcp",
-           "containerPort": 443
-         },
-         {
-           "hostPort": 4369,
-           "protocol": "tcp",
-           "containerPort": 4369
-         }
-       ],
-       "networkMode": "awsvpc",
-       "image": "${var.docker_image}",
-       "essential": true,
-       "privileged": false,
-       "name": "${local.app_name}",
-       "environment": [
-         ${local.ecs_shared_env_vars}
-       ],
-       ${module.firelens_log_config.datadog_container}
-      },
+     ${module.firelens_log_config.datadog_container},
      {
        "portMappings": [
          {
