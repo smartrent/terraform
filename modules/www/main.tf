@@ -424,6 +424,12 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
+       "secretOptions": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "${aws_ssm_parameter.nerves_hub_www_ssm_secret_db_url.arn}?pool_size=10"
+        }
+      ],
        ${module.firelens_log_config.log_configuration}
      }
    ]
