@@ -96,7 +96,7 @@ resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_db_url" {
 resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_db_url_larger_pool" {
   name      = "/nerves_hub_www/${terraform.workspace}/DATABASE_URL_LARGER_POOL"
   type      = "SecureString"
-  value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}?pool_size=10"
+  value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}?pool_size=25"
   overwrite = true
   tags      = var.tags
 }
