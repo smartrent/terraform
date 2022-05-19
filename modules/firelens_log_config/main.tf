@@ -139,7 +139,7 @@ EOF
           "compress": "gzip",
           "Host": "http-intake.logs.datadoghq.${local.tld}",
           "dd_service": "${var.app_name}",
-          "dd_source": "elixir",
+          "dd_source": "datadog",
           "dd_message_key": "log",
           "dd_tags": "env:${var.environment_name},application:${var.app_name}-${var.environment_name},version:${var.datadog_image_tag},task:${var.task_name}",
           "TLS": "on",
