@@ -14,18 +14,9 @@ variable "datadog_image" {
   type = string
 }
 
-variable "dd_source" {
-  type    = string
-  default = "elixir"
-}
-
 variable "region" {
   type        = string
   description = "The AWS Region"
-}
-
-variable "ssm_prefix" {
-  type = string
 }
 
 variable "tags" {
@@ -34,4 +25,14 @@ variable "tags" {
   default = {
     terraform = true
   }
+}
+
+variable "datadog_image_tag" {
+  description = "Datadog container image tag"
+  type        = string
+}
+
+variable "datadog_key_arn" {
+  description = "Datadog Key ARN"
+  type        = string
 }
