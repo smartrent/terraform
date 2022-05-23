@@ -2,14 +2,12 @@
 
 locals {
   device_app_name = "nerves_hub_device"
-  ssm_prefix = "nerves_hub_device"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
     { "name" : "APP_NAME", "value" : "${local.device_app_name}" },
     { "name" : "HOST", "value" : "${var.host_name}" },
     { "name" : "CLUSTER", "value" : "${var.cluster.name}" }
-
 EOF
 
 }
@@ -248,7 +246,8 @@ data "aws_iam_policy_document" "device_iam_policy" {
     ]
 
     resources = [
-      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${local.device_app_name}/${terraform.workspace}*"
+      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${local.device_app_name}/${terraform.workspace}*",
+      var.datadog_key_arn
     ]
   }
 
@@ -312,7 +311,6 @@ data "aws_iam_policy_document" "device_iam_policy" {
 
     resources = [
       var.kms_key.arn,
-      module.firelens_log_config.for_ssm_params.arn
     ]
   }
 
@@ -374,6 +372,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
   container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
+     ${module.firelens_log_config.datadog_container},
      {
        "portMappings": [
          {
@@ -394,14 +393,14 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        "name": "${local.device_app_name}",
        "environment": [
          ${local.ecs_shared_env_vars}
-       ]
-     },
-     ${module.firelens_log_config.datadog_container}
+       ],
+     ${module.firelens_log_config.log_configuration}
+     }
    ]
 DEFINITION
 
 
-depends_on = [
+  depends_on = [
     module.firelens_log_config
   ]
 
@@ -409,15 +408,16 @@ depends_on = [
 }
 
 module "firelens_log_config" {
-  source              = "../firelens_log_config"
-  app_name            = local.device_app_name
-  environment_name    = var.environment_name
-  task_name           = local.device_app_name
-  datadog_image       = var.datadog_image
-  region              = var.region
-  ssm_prefix          = local.ssm_prefix
+  source            = "../firelens_log_config"
+  app_name          = local.device_app_name
+  environment_name  = var.environment_name
+  task_name         = local.device_app_name
+  datadog_image     = var.datadog_image
+  datadog_image_tag = var.datadog_image_tag
+  datadog_key_arn   = var.datadog_key_arn
+  region            = var.region
 
-  tags                = var.tags
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "device_ecs_service" {
