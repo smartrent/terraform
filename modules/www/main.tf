@@ -1,8 +1,7 @@
 # nerves_hub_www
 
 locals {
-  app_name = "nerves_hub_www"
-  ssm_prefix = "nerves_hub_www"
+  app_name   = "nerves_hub_www"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
@@ -90,6 +89,14 @@ resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_db_url" {
   name      = "/nerves_hub_www/${terraform.workspace}/DATABASE_URL"
   type      = "SecureString"
   value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}"
+  overwrite = true
+  tags      = var.tags
+}
+
+resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_db_url_larger_pool" {
+  name      = "/nerves_hub_www/${terraform.workspace}/DATABASE_URL_LARGER_POOL"
+  type      = "SecureString"
+  value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}?pool_size=200"
   overwrite = true
   tags      = var.tags
 }
@@ -275,7 +282,8 @@ data "aws_iam_policy_document" "www_iam_policy" {
     ]
 
     resources = [
-      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/nerves_hub_www/${terraform.workspace}*"
+      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/nerves_hub_www/${terraform.workspace}*",
+      var.datadog_key_arn
     ]
   }
 
@@ -340,7 +348,6 @@ data "aws_iam_policy_document" "www_iam_policy" {
 
     resources = [
       var.kms_key.arn,
-      module.firelens_log_config.for_ssm_params.arn
     ]
   }
 
@@ -400,9 +407,10 @@ resource "aws_ecs_task_definition" "www_task_definition" {
   memory                   = "512"
   tags                     = var.tags
 
-container_definitions = <<DEFINITION
+  container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
+     ${module.firelens_log_config.datadog_container},
      {
        "portMappings": [
          {
@@ -423,28 +431,22 @@ container_definitions = <<DEFINITION
        "name": "nerves_hub_www",
        "environment": [
          ${local.ecs_shared_env_vars}
-       ]
-     },
-     ${module.firelens_log_config.datadog_container}
+       ],
+       "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "${aws_ssm_parameter.nerves_hub_www_ssm_secret_db_url_larger_pool.arn}"
+        }
+      ],
+       ${module.firelens_log_config.log_configuration}
+     }
    ]
 DEFINITION
 
-depends_on = [
+  depends_on = [
     module.firelens_log_config
   ]
 
-}
-
-module "firelens_log_config" {
-  source              = "../firelens_log_config"
-  app_name            = local.app_name
-  environment_name    = var.environment_name
-  task_name           = local.app_name
-  datadog_image       = var.datadog_image
-  region              = var.region
-  ssm_prefix          = local.ssm_prefix
-
-  tags                = var.tags
 }
 
 resource "aws_ecs_service" "www_ecs_service" {
@@ -487,4 +489,17 @@ resource "aws_ecs_service" "www_ecs_service" {
     aws_iam_role.www_task_role,
     aws_lb_listener.www_lb_listener
   ]
+}
+
+module "firelens_log_config" {
+  source            = "../firelens_log_config"
+  app_name          = local.app_name
+  environment_name  = var.environment_name
+  task_name         = local.app_name
+  datadog_image     = var.datadog_image
+  datadog_image_tag = var.datadog_image_tag
+  datadog_key_arn   = var.datadog_key_arn
+  region            = var.region
+
+  tags = var.tags
 }
