@@ -1,8 +1,7 @@
 # nerves_hub_ca
 
 locals {
-  app_name = "nerves_hub_ca"
-  ssm_prefix = "nerves_hub_ca"
+  app_name   = "nerves_hub_ca"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
@@ -135,6 +134,14 @@ resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_db_url" {
   tags      = var.tags
 }
 
+resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_db_url_larger_pool" {
+  name      = "/nerves_hub_ca/${terraform.workspace}/DATABASE_URL_LARGER_POOL"
+  type      = "SecureString"
+  value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}?pool_size=200"
+  overwrite = true
+  tags      = var.tags
+}
+
 resource "aws_ssm_parameter" "nerves_hub_ca_ssm_secret_erl_cookie" {
   name      = "/nerves_hub_ca/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
@@ -211,6 +218,7 @@ data "aws_iam_policy_document" "ca_iam_policy" {
 
     resources = [
       "arn:aws:ssm:${var.region}:${var.account_id}:parameter/nerves_hub_ca/${terraform.workspace}*",
+      var.datadog_key_arn
     ]
   }
 
@@ -255,7 +263,6 @@ data "aws_iam_policy_document" "ca_iam_policy" {
 
     resources = [
       var.kms_key.arn,
-      module.firelens_log_config.for_ssm_params.arn
     ]
   }
 
@@ -336,6 +343,7 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
   container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
+     ${module.firelens_log_config.datadog_container},
      {
        "portMappings": [
          {
@@ -356,28 +364,29 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
        "name": "nerves_hub_ca",
        "environment": [
          ${local.ecs_shared_env_vars}
-       ]
-     },
-     ${module.firelens_log_config.datadog_container}
+       ],
+     ${module.firelens_log_config.log_configuration}
+     }
    ]
 DEFINITION
 
-depends_on = [
+  depends_on = [
     module.firelens_log_config
   ]
 
 }
 
 module "firelens_log_config" {
-  source              = "../firelens_log_config"
-  app_name            = local.app_name
-  environment_name    = var.environment_name
-  task_name           = local.app_name
-  datadog_image       = var.datadog_image
-  region              = var.region
-  ssm_prefix          = local.ssm_prefix
+  source            = "../firelens_log_config"
+  app_name          = local.app_name
+  environment_name  = var.environment_name
+  task_name         = local.app_name
+  datadog_image     = var.datadog_image
+  datadog_image_tag = var.datadog_image_tag
+  datadog_key_arn   = var.datadog_key_arn
+  region            = var.region
 
-  tags                = var.tags
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "ca_ecs_service" {
