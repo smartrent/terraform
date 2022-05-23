@@ -7,7 +7,6 @@ locals {
     aws_ecs_service.api_ecs_service[0].cluster,
     "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-api:*",
   ]
-  ssm_prefix = "nerves_hub_api"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
@@ -263,7 +262,8 @@ data "aws_iam_policy_document" "api_iam_policy" {
     ]
 
     resources = [
-      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${local.app_name}/${terraform.workspace}*"
+      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${local.app_name}/${terraform.workspace}*",
+      var.datadog_key_arn
     ]
   }
 
@@ -328,7 +328,6 @@ data "aws_iam_policy_document" "api_iam_policy" {
 
     resources = [
       var.kms_key.arn,
-      module.firelens_log_config.for_ssm_params.arn
     ]
   }
 
@@ -389,6 +388,7 @@ resource "aws_ecs_task_definition" "api_task_definition" {
   container_definitions = <<DEFINITION
    [
      ${module.firelens_log_config.fire_lens_container},
+     ${module.firelens_log_config.datadog_container},
      {
        "portMappings": [
          {
@@ -409,28 +409,29 @@ resource "aws_ecs_task_definition" "api_task_definition" {
        "name": "${local.app_name}",
        "environment": [
          ${local.ecs_shared_env_vars}
-       ]
-     },
-     ${module.firelens_log_config.datadog_container}
+       ],
+     ${module.firelens_log_config.log_configuration}
+     }
    ]
 DEFINITION
 
-depends_on = [
+  depends_on = [
     module.firelens_log_config
   ]
 
 }
 
 module "firelens_log_config" {
-  source              = "../firelens_log_config"
-  app_name            = local.app_name
-  environment_name    = var.environment_name
-  task_name           = local.app_name
-  datadog_image       = var.datadog_image
-  region              = var.region
-  ssm_prefix          = local.ssm_prefix
+  source            = "../firelens_log_config"
+  app_name          = local.app_name
+  environment_name  = var.environment_name
+  task_name         = local.app_name
+  datadog_image     = var.datadog_image
+  datadog_image_tag = var.datadog_image_tag
+  datadog_key_arn   = var.datadog_key_arn
+  region            = var.region
 
-  tags                = var.tags
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "api_ecs_service" {
