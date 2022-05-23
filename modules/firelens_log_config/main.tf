@@ -24,12 +24,12 @@ locals {
     "dockerLabels": {
       "com.datadoghq.tags.env": "${var.environment_name}",
       "com.datadoghq.tags.service": "${var.app_name}",
-      "com.datadoghq.tags.version": "${var.datadog_image}"
+      "com.datadoghq.tags.version": "${var.datadog_image_tag}"
     }
   }
 EOF
 
-datadog_ecs_agent_task_def = <<EOF
+  datadog_ecs_agent_task_def = <<EOF
 {
   "name": "datadog-agent",
   "image": "${var.datadog_image}",
@@ -72,10 +72,6 @@ datadog_ecs_agent_task_def = <<EOF
       "value": "true"
     },
     {
-      "name": "DD_SYSTEM_PROBE_ENABLED",
-      "value": "true"
-    },
-    {
       "name": "DD_PROCESS_AGENT_ENABLED",
       "value": "true"
     },
@@ -90,6 +86,10 @@ datadog_ecs_agent_task_def = <<EOF
     {
       "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
       "value": "true"
+    },
+    {
+	  "name": "DD_SITE",
+	  "value": "datadoghq.${local.tld}"
     },
     {
       "name": "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL",
@@ -109,26 +109,29 @@ datadog_ecs_agent_task_def = <<EOF
     },
     {
       "name": "DD_VERSION",
-      "value": "${var.datadog_image}"
+      "value": "${var.datadog_image_tag}"
     },
     {
       "name": "DD_DOCKER_LABELS_AS_TAGS",
-      "value": "${replace(jsonencode(var.tags), "\"", "\\\"")}"
+      "value": "{\"com.datadoghq.tags.service\": \"service\", \"com.datadoghq.tags.version\": \"version\", \"com.datadoghq.tags.env\": \"env\"}"
     }
   ],
   "secrets": [
     {
       "name": "DD_API_KEY",
-      "valueFrom": "${aws_ssm_parameter.datadog_key.arn}"
+      "valueFrom": "${var.datadog_key_arn}"
     }
   ],
-  ${local.log_configuration}
+  "dockerLabels": {
+          "com.datadoghq.tags.env": "${var.environment_name}",
+          "com.datadoghq.tags.service": "${var.app_name}",
+          "com.datadoghq.tags.version": "${var.datadog_image_tag}"
+  },
+  ${local.datadog_log_configuration}
 }
 EOF
 
   log_configuration = <<EOF
-  "mountPoints": [],
-  "volumesFrom": [],
   "logConfiguration": {
         "logDriver": "awsfirelens",
         "options": {
@@ -136,17 +139,51 @@ EOF
           "compress": "gzip",
           "Host": "http-intake.logs.datadoghq.${local.tld}",
           "dd_service": "${var.app_name}",
-          "dd_source": "${var.dd_source}",
+          "dd_source": "elixir",
           "dd_message_key": "log",
-          "dd_tags": "env:${var.environment_name},application:${var.app_name}-${var.environment_name},version:${var.datadog_image},task:${var.task_name}",
+          "dd_tags": "env:${var.environment_name},application:${var.app_name}-${var.environment_name},version:${var.datadog_image_tag},task:${var.task_name}",
           "TLS": "on",
           "provider": "ecs"
         },
+        "secretOptions": [
+        {
+          "name": "apikey",
+          "valueFrom": "${var.datadog_key_arn}"
+        }
+      ]
+    },
         "dockerLabels": {
           "com.datadoghq.tags.env": "${var.environment_name}",
           "com.datadoghq.tags.service": "${var.app_name}",
-          "com.datadoghq.tags.version": "${var.datadog_image}"
+          "com.datadoghq.tags.version": "${var.datadog_image_tag}"
         }
-  }
+EOF
+
+  datadog_log_configuration = <<EOF
+  "logConfiguration": {
+        "logDriver": "awsfirelens",
+        "options": {
+          "Name": "datadog",
+          "compress": "gzip",
+          "Host": "http-intake.logs.datadoghq.${local.tld}",
+          "dd_service": "${var.app_name}",
+          "dd_source": "datadog",
+          "dd_message_key": "log",
+          "dd_tags": "env:${var.environment_name},application:${var.app_name}-${var.environment_name},version:${var.datadog_image_tag},task:${var.task_name}",
+          "TLS": "on",
+          "provider": "ecs"
+        },
+        "secretOptions": [
+        {
+          "name": "apikey",
+          "valueFrom": "${var.datadog_key_arn}"
+        }
+      ]
+    },
+        "dockerLabels": {
+          "com.datadoghq.tags.env": "${var.environment_name}",
+          "com.datadoghq.tags.service": "${var.app_name}",
+          "com.datadoghq.tags.version": "${var.datadog_image_tag}"
+        }
 EOF
 }

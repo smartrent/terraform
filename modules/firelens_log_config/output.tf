@@ -11,9 +11,5 @@ output "datadog_container" {
 }
 
 output "datadog_key_arn" {
-    value = aws_ssm_parameter.datadog_key.arn
-}
-
-output "for_ssm_params" {
-    value = aws_kms_key.for_ssm_params
+  value = var.datadog_key_arn
 }
