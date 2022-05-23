@@ -342,8 +342,8 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
 
   container_definitions = <<DEFINITION
    [
-     ${module.firelens_log_config.fire_lens_container},
-     ${module.firelens_log_config.datadog_container},
+     ${module.logging_configs.fire_lens_container},
+     ${module.logging_configs.datadog_container},
      {
        "portMappings": [
          {
@@ -365,19 +365,19 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
-     ${module.firelens_log_config.log_configuration}
+     ${module.logging_configs.log_configuration}
      }
    ]
 DEFINITION
 
   depends_on = [
-    module.firelens_log_config
+    module.logging_configs
   ]
 
 }
 
-module "firelens_log_config" {
-  source            = "../firelens_log_config"
+module "logging_configs" {
+  source            = "../logging_configs"
   app_name          = local.app_name
   environment_name  = var.environment_name
   task_name         = local.app_name
