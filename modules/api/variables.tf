@@ -16,7 +16,9 @@ variable "cluster" {}
 variable "secret_key_base" {}
 variable "smtp_username" {}
 variable "smtp_password" {}
-variable "service_count" {}
+variable "service_count" {
+  default = 0
+}
 variable "api_public_service_count" {
   default = 0
 }
@@ -39,15 +41,19 @@ variable "certificate_arn" {
 variable "from_email" {
   default = "no-reply@nerves-hub.org"
 }
+
 variable "access_logs" {
   default = false
 }
+
 variable "access_logs_bucket" {
   default = ""
 }
+
 variable "access_logs_prefix" {
   default = "nerves-hub-api-nlb"
 }
+
 variable "internal_lb" {
   description = "Whether or not the load balancer is internal"
   default     = false
@@ -63,10 +69,22 @@ variable "tags" {
     terraform = true
   }
 }
+
 variable "environment_name" {
   type = string
 }
+
 variable "datadog_image" {
   description = "Datadog container image"
-  type = string
+  type        = string
+}
+
+variable "datadog_image_tag" {
+  description = "Datadog container image tag"
+  type        = string
+}
+
+variable "datadog_key_arn" {
+  description = "Datadog Key"
+  type        = string
 }
