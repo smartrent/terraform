@@ -36,3 +36,8 @@ variable "datadog_key_arn" {
   description = "Datadog Key ARN"
   type        = string
 }
+
+variable "docker_image_tag" {
+  description = "Docker Image Tag of Application"
+  type        = string  
+}
