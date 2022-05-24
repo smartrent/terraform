@@ -91,14 +91,6 @@ resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_db_url" {
   tags      = var.tags
 }
 
-resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_db_url_larger_pool" {
-  name      = "/nerves_hub_www/${terraform.workspace}/DATABASE_URL_LARGER_POOL"
-  type      = "SecureString"
-  value     = "postgres://${var.db.username}:${var.db.password}@${var.db.endpoint}/${var.db.name}?pool_size=200"
-  overwrite = true
-  tags      = var.tags
-}
-
 resource "aws_ssm_parameter" "nerves_hub_www_ssm_secret_live_view_signing_salt" {
   name      = "/nerves_hub_www/${terraform.workspace}/LIVE_VIEW_SIGNING_SALT"
   type      = "SecureString"
@@ -430,12 +422,6 @@ resource "aws_ecs_task_definition" "www_task_definition" {
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
-       "secrets": [
-        {
-          "name": "DATABASE_URL",
-          "valueFrom": "${aws_ssm_parameter.nerves_hub_www_ssm_secret_db_url_larger_pool.arn}"
-        }
-      ],
        ${module.firelens_log_config.log_configuration}
      }
    ]
