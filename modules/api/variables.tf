@@ -79,8 +79,8 @@ variable "datadog_image" {
   type        = string
 }
 
-variable "datadog_image_tag" {
-  description = "Datadog container image tag"
+variable "docker_image_tag" {
+  description = "Docker Image tag for API Application"
   type        = string
 }
 
