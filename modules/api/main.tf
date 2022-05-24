@@ -10,10 +10,7 @@ locals {
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
-    { "name" : "APP_NAME", "value" : "${local.app_name}" },
-    { "name" : "HOST", "value" : "${var.host_name}" },
-    { "name" : "CLUSTER", "value" : "${var.cluster.name}" },
-    { "name" : "S3_BUCKET_NAME", "value" : "${var.app_bucket}" }
+    { "name" : "APP_NAME", "value" : "${local.app_name}" }
 EOF
 
 }
