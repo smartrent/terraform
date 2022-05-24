@@ -481,7 +481,6 @@ module "logging_configs" {
   environment_name  = var.environment_name
   task_name         = local.app_name
   datadog_image     = var.datadog_image
-  datadog_image_tag = var.datadog_image_tag
   datadog_key_arn   = var.datadog_key_arn
   region            = var.region
   docker_image_tag  = var.docker_image_tag
