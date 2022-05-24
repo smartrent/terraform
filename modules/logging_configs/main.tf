@@ -109,7 +109,7 @@ EOF
     },
     {
       "name": "DD_VERSION",
-      "value": "${var.datadog_image_tag}"
+      "value": "${var.docker_image_tag}"
     },
     {
       "name": "DD_DOCKER_LABELS_AS_TAGS",
@@ -117,7 +117,7 @@ EOF
     },
     {
       "name": "DD_DOGSTATSD_TAGS",
-      "value": "[\"env:${var.environment_name}\", \"service:${var.app_name}\", \"version:${var.datadog_image_tag}\"]"
+      "value": "[\"env:${var.environment_name}\", \"service:${var.app_name}\", \"version:${var.docker_image_tag}\"]"
     }
   ],
   "secrets": [
@@ -145,7 +145,7 @@ EOF
           "dd_service": "${var.app_name}",
           "dd_source": "elixir",
           "dd_message_key": "log",
-          "dd_tags": "env:${var.environment_name},application:${var.app_name}-${var.environment_name},version:${var.datadog_image_tag},task:${var.task_name}",
+          "dd_tags": "env:${var.environment_name},application:${var.app_name}-${var.environment_name},version:${var.docker_image_tag},task:${var.task_name}",
           "TLS": "on",
           "provider": "ecs"
         },
@@ -159,7 +159,7 @@ EOF
         "dockerLabels": {
           "com.datadoghq.tags.env": "${var.environment_name}",
           "com.datadoghq.tags.service": "${var.app_name}",
-          "com.datadoghq.tags.version": "${var.datadog_image_tag}"
+          "com.datadoghq.tags.version": "${var.docker_image_tag}"
         }
 EOF
 
