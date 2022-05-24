@@ -114,6 +114,10 @@ EOF
     {
       "name": "DD_DOCKER_LABELS_AS_TAGS",
       "value": "{\"com.datadoghq.tags.service\": \"service\", \"com.datadoghq.tags.version\": \"version\", \"com.datadoghq.tags.env\": \"env\"}"
+    },
+    {
+      "name": "DD_DOGSTATSD_TAGS",
+      "value": "[\"env:${var.environment_name}\", \"service:${var.app_name}\", \"version:${var.datadog_image_tag}\"]"
     }
   ],
   "secrets": [
