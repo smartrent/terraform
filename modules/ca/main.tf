@@ -365,12 +365,6 @@ resource "aws_ecs_task_definition" "ca_task_definition" {
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
-       "secrets": [
-        {
-          "name": "DATABASE_URL",
-          "valueFrom": "${aws_ssm_parameter.nerves_hub_ca_ssm_secret_db_url_larger_pool.arn}"
-        }
-      ],
      ${module.firelens_log_config.log_configuration}
      }
    ]
