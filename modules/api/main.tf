@@ -420,7 +420,7 @@ DEFINITION
 module "firelens_log_config" {
   source            = "../firelens_log_config"
   app_name          = local.app_name
-  environment_name  = var.environment_name
+  environment_name  = terraform.workspace
   task_name         = local.app_name
   datadog_image     = var.datadog_image
   datadog_image_tag = var.datadog_image_tag
