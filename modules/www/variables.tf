@@ -70,5 +70,5 @@ variable "datadog_key_arn" {
 
 variable "docker_image_tag" {
   description = "Docker Image Tag of WWW Application"
-  type = string  
+  type        = string
 }

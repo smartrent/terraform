@@ -1,7 +1,7 @@
 # nerves_hub_www
 
 locals {
-  app_name   = "nerves_hub_www"
+  app_name = "nerves_hub_www"
 
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
@@ -475,14 +475,14 @@ resource "aws_ecs_service" "www_ecs_service" {
 }
 
 module "logging_configs" {
-  source            = "../logging_configs"
-  app_name          = local.app_name
-  environment_name  = terraform.workspace
-  task_name         = local.app_name
-  datadog_image     = var.datadog_image
-  datadog_key_arn   = var.datadog_key_arn
-  region            = var.region
-  docker_image_tag  = var.docker_image_tag
+  source           = "../logging_configs"
+  app_name         = local.app_name
+  environment_name = terraform.workspace
+  task_name        = local.app_name
+  datadog_image    = var.datadog_image
+  datadog_key_arn  = var.datadog_key_arn
+  region           = var.region
+  docker_image_tag = var.docker_image_tag
 
   tags = var.tags
 }
