@@ -5,7 +5,7 @@ locals {
 data "aws_caller_identity" "current" {}
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "nerves-hub-${terraform.workspace}"
+  name = "nerves-hub-${var.environment}"
 
   setting {
     name  = "containerInsights"
