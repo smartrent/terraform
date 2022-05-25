@@ -477,7 +477,7 @@ resource "aws_ecs_service" "www_ecs_service" {
 module "logging_configs" {
   source            = "../logging_configs"
   app_name          = local.app_name
-  environment_name  = var.environment_name
+  environment_name  = terraform.workspace
   task_name         = local.app_name
   datadog_image     = var.datadog_image
   datadog_key_arn   = var.datadog_key_arn
