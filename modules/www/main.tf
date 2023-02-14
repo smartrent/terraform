@@ -466,8 +466,8 @@ resource "aws_ecs_task_definition" "www_exec_task_definition" {
        "essential": true,
        "privileged": false,
        "name": "exec",
-       "entryPoint": ["tail"]
-       "command":["-f", "/dev/null"]
+       "entryPoint": ["tail"],
+       "command":["-f", "/dev/null"],
        "environment": [
          ${local.ecs_shared_env_vars}
        ],
