@@ -465,7 +465,7 @@ resource "aws_ecs_task_definition" "www_exec_task_definition" {
        "image": "${var.docker_image}",
        "essential": true,
        "privileged": false,
-       "name": "exec",
+       "name": "nerves-hub-www-exec",
        "entryPoint": ["tail"],
        "command":["-f", "/dev/null"],
        "environment": [
