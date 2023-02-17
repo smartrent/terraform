@@ -392,7 +392,10 @@ data "aws_iam_policy_document" "www_exec_iam_policy" {
   statement {
     sid = "execcmd"
     actions = ["ecs:ExecuteCommand"]
-    resources = [aws_ecs_cluster.www_ecs_service.cluster]
+    resources = [
+      aws_ecs_service.www_ecs_service.cluster,
+      "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-www:*",
+    ]
     effect = "Allow"
 }
 }
