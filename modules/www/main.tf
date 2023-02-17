@@ -375,6 +375,27 @@ data "aws_iam_policy_document" "www_iam_policy" {
   }
 }
 
+data "aws_iam_policy_document" "www_exec_iam_policy" {
+  statement {
+    sid = "execssm"
+    actions = [
+         "ssmmessages:OpenDataChannel",
+         "ssmmessages:OpenControlChannel",
+         "ssmmessages:CreateDataChannel",
+         "ssmmessages:CreateControlChannel"
+    ]
+    resources = [
+      "*"
+    ]
+    effect = "Allow"
+  }
+  statement {
+    sid = "execcmd"
+    actions = ["ecs:ExecuteCommand"]
+    resources = [aws_ecs_cluster.www_ecs_service.cluster]
+    effect = "Allow"
+}
+
 resource "aws_iam_policy" "www_task_policy" {
   name   = "nerves-hub-${terraform.workspace}-www-task-policy"
   policy = data.aws_iam_policy_document.www_iam_policy.json
@@ -383,6 +404,16 @@ resource "aws_iam_policy" "www_task_policy" {
 resource "aws_iam_role_policy_attachment" "www_role_policy_attach" {
   role       = aws_iam_role.www_task_role.name
   policy_arn = aws_iam_policy.www_task_policy.arn
+}
+
+resource "aws_iam_policy" "www_exec_task_policy" {
+  name   = "nerves-hub-${terraform.workspace}-www-exec-task-policy"
+  policy = data.aws_iam_policy_document.www_exec_iam_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "www_exec_role_policy_attach" {
+  role       = aws_iam_role.www_task_role.name
+  policy_arn = aws_iam_policy.www_exec_task_policy.arn
 }
 
 # ECS
