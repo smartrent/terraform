@@ -395,6 +395,7 @@ data "aws_iam_policy_document" "www_exec_iam_policy" {
     resources = [aws_ecs_cluster.www_ecs_service.cluster]
     effect = "Allow"
 }
+}
 
 resource "aws_iam_policy" "www_task_policy" {
   name   = "nerves-hub-${terraform.workspace}-www-task-policy"
