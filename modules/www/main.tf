@@ -484,18 +484,6 @@ resource "aws_ecs_task_definition" "www_exec_task_definition" {
      ${module.logging_configs.fire_lens_container},
      ${module.logging_configs.datadog_container},
      {
-       "portMappings": [
-         {
-           "hostPort": 80,
-           "protocol": "tcp",
-           "containerPort": 80
-         },
-         {
-           "hostPort": 4369,
-           "protocol": "tcp",
-           "containerPort": 4369
-         }
-       ],
        "networkMode": "awsvpc",
        "image": "${var.docker_image}",
        "essential": true,
