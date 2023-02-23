@@ -481,6 +481,7 @@ resource "aws_ecs_task_definition" "www_exec_task_definition" {
 
   container_definitions = <<DEFINITION
    [
+     ${module.logging_configs.fire_lens_container},
      {
        "networkMode": "awsvpc",
        "image": "${var.docker_image}",
@@ -491,7 +492,8 @@ resource "aws_ecs_task_definition" "www_exec_task_definition" {
        "command":["-f", "/dev/null"],
        "environment": [
          ${local.ecs_shared_env_vars}
-       ]
+       ],
+       ${module.logging_configs.log_configuration}
      }
    ]
 DEFINITION
