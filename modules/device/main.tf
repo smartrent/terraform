@@ -364,7 +364,7 @@ data "aws_iam_policy_document" "device_exec_iam_policy" {
     sid = "execcmd"
     actions = ["ecs:ExecuteCommand"]
     resources = [
-      aws_ecs_service.www_ecs_service.cluster,
+      aws_ecs_service.device_ecs_service.cluster,
       "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-device-exec:*",
     ]
     effect = "Allow"
