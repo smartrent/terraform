@@ -377,7 +377,7 @@ data "aws_iam_policy_document" "api_exec_iam_policy" {
     sid = "execcmd"
     actions = ["ecs:ExecuteCommand"]
     resources = [
-      "{$var.cluster.name}",
+      "arn:aws:ecs:${var.region}:${var.account_id}:${var.cluster.name}",
       "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-api-exec:*",
     ]
     effect = "Allow"
