@@ -491,8 +491,7 @@ resource "aws_ecs_task_definition" "www_exec_task_definition" {
        "command":["-f", "/dev/null"],
        "environment": [
          ${local.ecs_shared_env_vars}
-       ],
-       ${module.logging_configs.log_configuration}
+       ]
      }
    ]
 DEFINITION
