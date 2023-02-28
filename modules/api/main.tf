@@ -418,6 +418,8 @@ resource "aws_ecs_task_definition" "api_task_definition" {
 
   container_definitions = <<DEFINITION
    [
+     ${module.logging_configs.fire_lens_container},
+     ${module.logging_configs.datadog_container},
      {
        "portMappings": [
          {
