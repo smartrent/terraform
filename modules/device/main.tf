@@ -346,6 +346,31 @@ data "aws_iam_policy_document" "device_iam_policy" {
   }
 }
 
+data "aws_iam_policy_document" "device_exec_iam_policy" {
+  statement {
+    sid = "execssm"
+    actions = [
+         "ssmmessages:OpenDataChannel",
+         "ssmmessages:OpenControlChannel",
+         "ssmmessages:CreateDataChannel",
+         "ssmmessages:CreateControlChannel"
+    ]
+    resources = [
+      "*"
+    ]
+    effect = "Allow"
+  }
+  statement {
+    sid = "execcmd"
+    actions = ["ecs:ExecuteCommand"]
+    resources = [
+      aws_ecs_service.device_ecs_service.cluster,
+      "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-device-exec:*",
+    ]
+    effect = "Allow"
+}
+}
+
 resource "aws_iam_policy" "device_task_policy" {
   name   = "nerves-hub-${terraform.workspace}-device-task-policy"
   policy = data.aws_iam_policy_document.device_iam_policy.json
@@ -354,6 +379,16 @@ resource "aws_iam_policy" "device_task_policy" {
 resource "aws_iam_role_policy_attachment" "device_role_policy_attach" {
   role       = aws_iam_role.device_task_role.name
   policy_arn = aws_iam_policy.device_task_policy.arn
+}
+
+resource "aws_iam_policy" "device_exec_task_policy" {
+  name   = "nerves-hub-${terraform.workspace}-device-exec-task-policy"
+  policy = data.aws_iam_policy_document.device_exec_iam_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "device_exec_role_policy_attach" {
+  role       = aws_iam_role.device_task_role.name
+  policy_arn = aws_iam_policy.device_exec_task_policy.arn
 }
 
 # ECS
@@ -389,6 +424,44 @@ resource "aws_ecs_task_definition" "device_task_definition" {
        "essential": true,
        "privileged": false,
        "name": "${local.device_app_name}",
+       "environment": [
+         ${local.ecs_shared_env_vars}
+       ],
+     ${module.logging_configs.log_configuration}
+     }
+   ]
+DEFINITION
+
+
+  depends_on = [
+    module.logging_configs
+  ]
+
+  tags = var.tags
+}
+
+resource "aws_ecs_task_definition" "device_exec_task_definition" {
+  family             = "nerves-hub-${terraform.workspace}-device-exec"
+  task_role_arn      = aws_iam_role.device_task_role.arn
+  execution_role_arn = var.task_execution_role.arn
+
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.cpu
+  memory                   = var.memory
+
+  container_definitions = <<DEFINITION
+   [
+     ${module.logging_configs.fire_lens_container},
+     ${module.logging_configs.datadog_container},
+     {
+       "networkMode": "awsvpc",
+       "image": "${var.docker_image}",
+       "essential": true,
+       "privileged": false,
+       "name": "nerves-hub-device-exec",
+       "entryPoint": ["tail"],
+       "command":["-f", "/dev/null"],
        "environment": [
          ${local.ecs_shared_env_vars}
        ],

@@ -375,6 +375,31 @@ data "aws_iam_policy_document" "www_iam_policy" {
   }
 }
 
+data "aws_iam_policy_document" "www_exec_iam_policy" {
+  statement {
+    sid = "execssm"
+    actions = [
+         "ssmmessages:OpenDataChannel",
+         "ssmmessages:OpenControlChannel",
+         "ssmmessages:CreateDataChannel",
+         "ssmmessages:CreateControlChannel"
+    ]
+    resources = [
+      "*"
+    ]
+    effect = "Allow"
+  }
+  statement {
+    sid = "execcmd"
+    actions = ["ecs:ExecuteCommand"]
+    resources = [
+      aws_ecs_service.www_ecs_service.cluster,
+      "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-www-exec:*",
+    ]
+    effect = "Allow"
+}
+}
+
 resource "aws_iam_policy" "www_task_policy" {
   name   = "nerves-hub-${terraform.workspace}-www-task-policy"
   policy = data.aws_iam_policy_document.www_iam_policy.json
@@ -383,6 +408,16 @@ resource "aws_iam_policy" "www_task_policy" {
 resource "aws_iam_role_policy_attachment" "www_role_policy_attach" {
   role       = aws_iam_role.www_task_role.name
   policy_arn = aws_iam_policy.www_task_policy.arn
+}
+
+resource "aws_iam_policy" "www_exec_task_policy" {
+  name   = "nerves-hub-${terraform.workspace}-www-exec-task-policy"
+  policy = data.aws_iam_policy_document.www_exec_iam_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "www_exec_role_policy_attach" {
+  role       = aws_iam_role.www_task_role.name
+  policy_arn = aws_iam_policy.www_exec_task_policy.arn
 }
 
 # ECS
@@ -431,6 +466,42 @@ DEFINITION
     module.logging_configs
   ]
 
+}
+
+resource "aws_ecs_task_definition" "www_exec_task_definition" {
+  family             = "nerves-hub-${terraform.workspace}-www-exec"
+  task_role_arn      = aws_iam_role.www_task_role.arn
+  execution_role_arn = var.task_execution_role.arn
+
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.cpu
+  memory                   = var.memory
+  tags                     = var.tags
+
+  container_definitions = <<DEFINITION
+   [
+     ${module.logging_configs.fire_lens_container},
+     ${module.logging_configs.datadog_container},
+     {
+       "networkMode": "awsvpc",
+       "image": "${var.docker_image}",
+       "essential": true,
+       "privileged": false,
+       "name": "nerves-hub-www-exec",
+       "entryPoint": ["tail"],
+       "command":["-f", "/dev/null"],
+       "environment": [
+         ${local.ecs_shared_env_vars}
+       ],
+       ${module.logging_configs.log_configuration}
+     }
+   ]
+DEFINITION
+
+  depends_on = [
+    module.logging_configs
+  ]
 }
 
 resource "aws_ecs_service" "www_ecs_service" {
