@@ -27,17 +27,17 @@ variable "allocated_storage" {
 
 variable "storage_type" {
   type    = string
-  default = "gp3"
+  default = "gp2"
 }
 
 variable "storage_iops" {
   type    = number
-  default = 3000
+  default = null
 }
 
 variable "storage_throughput" {
   type    = number
-  default = 125
+  default = null
 }
 
 variable "instance_class" {
