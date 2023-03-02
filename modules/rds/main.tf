@@ -52,7 +52,9 @@ resource "aws_db_instance" "default" {
   storage_encrypted          = true
   kms_key_id                 = var.kms_key
   allocated_storage          = var.allocated_storage
-  storage_type               = "gp2"
+  storage_type               = var.storage_type
+  storage_throughput         = var.storage_throughput
+  iops                       = var.storage_iops
   engine                     = "postgres"
   engine_version             = var.engine_version
   instance_class             = var.instance_class
