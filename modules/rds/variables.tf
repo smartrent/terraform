@@ -25,6 +25,23 @@ variable "allocated_storage" {
   type = number
 }
 
+variable "storage_type" {
+  type    = string
+  default = "gp2"
+}
+
+variable "storage_iops" {
+  type     = number
+  nullable = true
+  default  = null
+}
+
+variable "storage_throughput" {
+  type     = number
+  nullable = true
+  default  = null
+}
+
 variable "instance_class" {
   description = "The Instance class of the Postgres database server"
 }
