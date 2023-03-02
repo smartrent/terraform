@@ -45,31 +45,32 @@ resource "aws_security_group" "rds_security_group" {
 }
 
 resource "aws_db_instance" "default" {
-  identifier                 = var.identifier
-  db_name                    = var.name
-  publicly_accessible        = false
-  apply_immediately          = true
-  storage_encrypted          = true
-  kms_key_id                 = var.kms_key
-  allocated_storage          = var.allocated_storage
-  storage_type               = var.storage_type
-  storage_throughput         = var.storage_throughput
-  iops                       = var.storage_iops
-  engine                     = "postgres"
-  engine_version             = var.engine_version
-  instance_class             = var.instance_class
-  username                   = var.username
-  password                   = var.password
-  backup_retention_period    = var.backup_retention_period
-  db_subnet_group_name       = var.subnet_group
-  auto_minor_version_upgrade = var.auto_minor_version_upgrade
-  maintenance_window         = var.maintenance_window
-  deletion_protection        = var.deletion_protection
-  multi_az                   = var.multi_az
-  copy_tags_to_snapshot      = var.copy_tags_to_snapshot
-  option_group_name          = aws_db_option_group.this.name
-  parameter_group_name       = aws_db_parameter_group.this.name
-  skip_final_snapshot        = true
+  identifier                  = var.identifier
+  db_name                     = var.name
+  publicly_accessible         = false
+  apply_immediately           = true
+  storage_encrypted           = true
+  kms_key_id                  = var.kms_key
+  allocated_storage           = var.allocated_storage
+  storage_type                = var.storage_type
+  storage_throughput          = var.storage_throughput
+  iops                        = var.storage_iops
+  engine                      = "postgres"
+  engine_version              = var.engine_version
+  instance_class              = var.instance_class
+  username                    = var.username
+  password                    = var.password
+  backup_retention_period     = var.backup_retention_period
+  db_subnet_group_name        = var.subnet_group
+  auto_minor_version_upgrade  = var.auto_minor_version_upgrade
+  allow_major_version_upgrade = var.allow_major_version_upgrade
+  maintenance_window          = var.maintenance_window
+  deletion_protection         = var.deletion_protection
+  multi_az                    = var.multi_az
+  copy_tags_to_snapshot       = var.copy_tags_to_snapshot
+  option_group_name           = aws_db_option_group.this.name
+  parameter_group_name        = aws_db_parameter_group.this.name
+  skip_final_snapshot         = true
 
   performance_insights_enabled    = var.performance_insights
   enabled_cloudwatch_logs_exports = var.cloudwatch_log_exports
