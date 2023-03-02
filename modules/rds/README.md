@@ -54,9 +54,9 @@ No modules.
 | <a name="input_password"></a> [password](#input\_password) | n/a | `any` | n/a | yes |
 | <a name="input_performance_insights"></a> [performance\_insights](#input\_performance\_insights) | n/a | `bool` | `false` | no |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | n/a | `list` | <pre>[<br>  ""<br>]</pre> | no |
-| <a name="input_storage_iops"></a> [storage\_iops](#input\_storage\_iops) | n/a | `number` | `null` | no |
-| <a name="input_storage_throughput"></a> [storage\_throughput](#input\_storage\_throughput) | n/a | `number` | `null` | no |
-| <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | n/a | `string` | `"gp2"` | no |
+| <a name="input_storage_iops"></a> [storage\_iops](#input\_storage\_iops) | n/a | `number` | `3000` | no |
+| <a name="input_storage_throughput"></a> [storage\_throughput](#input\_storage\_throughput) | n/a | `number` | `125` | no |
+| <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | n/a | `string` | `"gp3"` | no |
 | <a name="input_subnet_group"></a> [subnet\_group](#input\_subnet\_group) | DB subnet group | `any` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources | `map(string)` | <pre>{<br>  "terraform": true<br>}</pre> | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Define maximum timeout for deletion of `aws_db_option_group` resource | `map(string)` | <pre>{<br>  "delete": "15m"<br>}</pre> | no |
