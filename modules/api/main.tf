@@ -11,7 +11,8 @@ locals {
   ecs_shared_env_vars = <<EOF
     { "name" : "ENVIRONMENT", "value" : "${terraform.workspace}" },
     { "name" : "APP_NAME", "value" : "${local.app_name}" },
-    { "name" : "DD_ENV", "value" : "${terraform.workspace}" }
+    { "name" : "DD_ENV", "value" : "${terraform.workspace}" },
+    { "name" : "NERVES_HUB_APP", "value" : "api" }
 EOF
 
 }
