@@ -66,3 +66,9 @@ variable "datadog_key_arn" {
   description = "Datadog Key"
   type        = string
 }
+
+variable "device_db_pool_size" {
+  description = "Database Pool Size for Device Tasks"
+  type        = number
+  default     = 5
+}
