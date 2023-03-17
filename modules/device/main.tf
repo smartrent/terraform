@@ -71,6 +71,14 @@ resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_db_url" {
   tags      = var.tags
 }
 
+resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_db_pool_size" {
+  name      = "/${local.device_app_name}/${terraform.workspace}/POOL_SIZE"
+  type      = "String"
+  value     = var.device_db_pool_size
+  overwrite = true
+  tags      = var.tags
+}
+
 resource "aws_ssm_parameter" "nerves_hub_device_ssm_secret_erl_cookie" {
   name      = "/${local.device_app_name}/${terraform.workspace}/ERL_COOKIE"
   type      = "SecureString"
@@ -350,10 +358,10 @@ data "aws_iam_policy_document" "device_exec_iam_policy" {
   statement {
     sid = "execssm"
     actions = [
-         "ssmmessages:OpenDataChannel",
-         "ssmmessages:OpenControlChannel",
-         "ssmmessages:CreateDataChannel",
-         "ssmmessages:CreateControlChannel"
+      "ssmmessages:OpenDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:CreateControlChannel"
     ]
     resources = [
       "*"
@@ -361,14 +369,14 @@ data "aws_iam_policy_document" "device_exec_iam_policy" {
     effect = "Allow"
   }
   statement {
-    sid = "execcmd"
+    sid     = "execcmd"
     actions = ["ecs:ExecuteCommand"]
     resources = [
       aws_ecs_service.device_ecs_service.cluster,
       "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-device-exec:*",
     ]
     effect = "Allow"
-}
+  }
 }
 
 resource "aws_iam_policy" "device_task_policy" {
