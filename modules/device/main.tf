@@ -432,7 +432,7 @@ resource "aws_ecs_task_definition" "device_task_definition" {
          {
           "name": "nofile",
           "hardLimit": 51200,
-          "softLimit": 51200,
+          "softLimit": 51200
          }
        ],
        "networkMode": "awsvpc",
