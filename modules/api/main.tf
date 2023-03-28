@@ -434,6 +434,13 @@ resource "aws_ecs_task_definition" "api_task_definition" {
            "containerPort": 4369
          }
        ],
+      "ulimits": [
+         {
+          "name": "nofile",
+          "hardLimit": 51200,
+          "softLimit": 51200
+         }
+       ],
        "networkMode": "awsvpc",
        "image": "${var.docker_image}",
        "essential": true,
