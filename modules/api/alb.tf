@@ -2,7 +2,7 @@
 resource "aws_lb_target_group" "api_alb_tg" {
   count                = var.alb ? 1 : 0
   name                 = "nerves-hub-${terraform.workspace}-api-tg"
-  port                 = 443
+  port                 = 80
   protocol             = "HTTPS"
   target_type          = "ip"
   vpc_id               = var.vpc.vpc_id
@@ -164,7 +164,7 @@ resource "aws_ecs_service" "api_public_ecs_service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.api_alb_tg[count.index].arn
     container_name   = local.app_name
-    container_port   = 443
+    container_port   = 80
   }
 
   network_configuration {
