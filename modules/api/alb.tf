@@ -1,9 +1,9 @@
 # Load Balancer
 resource "aws_lb_target_group" "api_alb_tg" {
   count                = var.alb ? 1 : 0
-  name                 = "nerves-hub-${terraform.workspace}-api-tg"
+  name                 = "nerves-hub-${terraform.workspace}-api-tg-80"
   port                 = 80
-  protocol             = "HTTPS"
+  protocol             = "HTTP"
   target_type          = "ip"
   vpc_id               = var.vpc.vpc_id
   deregistration_delay = 120
@@ -14,7 +14,7 @@ resource "aws_lb_target_group" "api_alb_tg" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     matcher             = "200-399"
-    protocol            = "HTTPS"
+    protocol            = "HTTP"
     path                = "/health"
   }
 

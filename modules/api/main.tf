@@ -364,10 +364,10 @@ data "aws_iam_policy_document" "api_exec_iam_policy" {
   statement {
     sid = "execssm"
     actions = [
-         "ssmmessages:OpenDataChannel",
-         "ssmmessages:OpenControlChannel",
-         "ssmmessages:CreateDataChannel",
-         "ssmmessages:CreateControlChannel"
+      "ssmmessages:OpenDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:CreateControlChannel"
     ]
     resources = [
       "*"
@@ -375,14 +375,14 @@ data "aws_iam_policy_document" "api_exec_iam_policy" {
     effect = "Allow"
   }
   statement {
-    sid = "execcmd"
+    sid     = "execcmd"
     actions = ["ecs:ExecuteCommand"]
     resources = [
       "arn:aws:ecs:${var.region}:${var.account_id}:cluster/${var.cluster.name}",
       "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/nerves-hub-${terraform.workspace}-api-exec:*",
     ]
     effect = "Allow"
-}
+  }
 }
 resource "aws_iam_policy" "api_task_policy" {
   name   = "nerves-hub-${terraform.workspace}-api-task-policy"
@@ -424,9 +424,9 @@ resource "aws_ecs_task_definition" "api_task_definition" {
      {
        "portMappings": [
          {
-           "hostPort": 443,
+           "hostPort": 80,
            "protocol": "tcp",
-           "containerPort": 443
+           "containerPort": 80
          },
          {
            "hostPort": 4369,
