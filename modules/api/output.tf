@@ -13,3 +13,11 @@ output "alb_zone_id" {
 output "alb_dns_name" {
   value = var.alb ? element(aws_lb.api_alb.*.dns_name, 0) : null
 }
+
+output "alb_security_group_id" {
+  value = aws_security_group.port80_lb_security_group.id
+}
+
+output "nlb_security_group_id" {
+  value = aws_security_group.port443_lb_security_group.id
+}
