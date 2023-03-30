@@ -15,9 +15,9 @@ output "alb_dns_name" {
 }
 
 output "alb_security_group_id" {
-  value = aws_security_group.port80_lb_security_group.id
+  value = var.alb ? element(aws_security_group.port80_lb_security_group.id, 0) : null
 }
 
 output "nlb_security_group_id" {
-  value = aws_security_group.port443_lb_security_group.id
+  value = var.nlb ? element(aws_security_group.port443_lb_security_group.id, 0) : null
 }
