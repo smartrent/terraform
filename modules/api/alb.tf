@@ -1,5 +1,5 @@
 # Load Balancer
-resource "aws_lb_target_group" "api_alb_tg" {
+resource "aws_lb_target_group" "api_alb_tg_80" {
   count                = var.alb ? 1 : 0
   name                 = "nerves-hub-${terraform.workspace}-api-tg-80"
   port                 = 80
@@ -69,7 +69,7 @@ resource "aws_lb_listener" "https_alb_listener" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.api_alb_tg[count.index].arn
+    target_group_arn = aws_lb_target_group.api_alb_tg_80[count.index].arn
   }
 }
 
@@ -162,7 +162,7 @@ resource "aws_ecs_service" "api_public_ecs_service" {
   health_check_grace_period_seconds = 300
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.api_alb_tg[count.index].arn
+    target_group_arn = aws_lb_target_group.api_alb_tg_80[count.index].arn
     container_name   = local.app_name
     container_port   = 80
   }
